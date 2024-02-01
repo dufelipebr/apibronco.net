@@ -1,0 +1,54 @@
+﻿
+using apibronco.bronco.com.br.Interfaces;
+
+namespace apibronco.bronco.com.br
+{
+    public class CustomLogger : ILogger
+    {
+        private readonly string _loggerName;
+        private readonly CustomLoggerProviderConfiguration _cfg;
+        private ILogRepository _logrepository;
+
+        public CustomLogger(string nome, CustomLoggerProviderConfiguration cfg) 
+        {
+            this._cfg = cfg;
+            this._loggerName = nome;
+        }
+
+        public IDisposable? BeginScope<TState>(TState state) where TState : notnull
+        {
+            return null;
+        }
+
+        public bool IsEnabled(LogLevel logLevel)
+        {
+            return true;
+        }
+
+        public void Log<TState>(
+                LogLevel logLevel, 
+                EventId eventId, 
+                TState state, 
+                Exception? exception, 
+                Func<TState, Exception?, string> formatter)
+        {
+            var mensagem = string.Format($"{DateTime.Now}-{logLevel}:{eventId} - {formatter(state, exception)}");
+            _
+            EscreverArquivo(mensagem);
+        }
+
+        //private void EscreverArquivo(string mensagem)
+        //{
+        //    var caminhoArquivo = @$"C:\temp\Log-{DateTime.Now:yyyy-MM-dd}.txt";
+        //    if (!File.Exists(caminhoArquivo))
+        //    {
+        //        Directory.CreateDirectory(Path.GetDirectoryName(caminhoArquivo));
+        //        File.Create(caminhoArquivo).Dispose();
+        //    }
+
+        //    using StreamWriter streamWriter = new StreamWriter(caminhoArquivo, true);
+        //    streamWriter.WriteLine(mensagem);
+        //    streamWriter.Close();
+        //}
+    }
+}
