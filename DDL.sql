@@ -12,6 +12,9 @@ IF OBJECT_ID('[dbo].[Usuario]') <> NULL
 IF OBJECT_ID('[dbo].[Proposta]') <> NULL 
 	DROP TABLE [dbo].[Proposta]
 GO
+IF OBJECT_ID('[dbo].[Log]') is NOT NULL 
+	DROP TABLE [dbo].[Log]
+GO
 CREATE TABLE [dbo].[Usuario](
 	[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
 	[Nome] [varchar](50) NOT NULL,
@@ -29,11 +32,34 @@ CREATE TABLE [dbo].[Proposta](
 	[Codigo_Interno] [varchar](50) NOT NULL,
 	[Codigo_Empresa] [varchar](100) NOT NULL,
 	[Codigo_Apolice] [varchar](100) NOT NULL, 
-	[Segurado_Id] int 
+	[Segurado_Id] int, 
 	[Endereco_Segurado] [int] NOT NULL, 
 	CONSTRAINT AK_Usuario_Email UNIQUE(Email)  
 ) ON [PRIMARY]
 GO
+
+
+GO
+
+CREATE TABLE [dbo].[Log](
+	[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[Data_Log] DATETIME NOT NULL,
+	[Tipo_Log] [varchar](20) NOT NULL, 
+	[Mensagem] [varchar](500) NOT NULL,
+	[Stack_Trace] [varchar](1000) NULL,
+	[Module_Name] [varchar](100) NOT NULL
+) ON [PRIMARY]
+GO
+GO
+
+CREATE TABLE [dbo].[Condicao_Pagto](
+	[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[Descricao] [varchar](50) NOT NULL,
+	[Codigo] [varchar](20) NOT NULL, 
+	[Max_Parcelamento] int NOT NULL
+) ON [PRIMARY]
+GO
+
 
 
 

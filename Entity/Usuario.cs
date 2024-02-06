@@ -39,7 +39,7 @@
 
         public bool IsValid()
         {
-            return base.IsValid();
+            return true;
         }
 
     }

@@ -1,8 +1,9 @@
-﻿using System.Net;
+﻿using apibronco.bronco.com.br.Interfaces;
+using System.Net;
 
 namespace apibronco.bronco.com.br.Entity
 {
-    public class Cobertura : Entidade
+    public class Cobertura : Entidade, IEntidade
     {
         public TipoCobertura Tipo_Cobertura { get; set; } //  96001- Básica-Incêndio, raio, explosão, implosão e fumaça
         public string Descricao { get; set; }
@@ -30,7 +31,7 @@ Equipamentos eletrônicos*/
 
         public bool IsValid()
         {
-            return base.IsValid();
+            return true;
         }
     }
 }

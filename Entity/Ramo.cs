@@ -2,13 +2,15 @@
 {
     public class Ramo : Entidade
     {
-        public string Codigo { get; set; }
+        public string Codigo_Ramo { get; set; }
 
-        public string Codigo_SUSEP { get; set; }
-        public string Codigo_Empresa { get; set; } // identificador da empresa geralmente 1
+        public string Codigo_SUSEP_Ramo { get; set; }
         
-        public string Descricao { get; set; } // 
+        public string Descricao_Ramo { get; set; } // 
 
-        public string Codigo_Grupo { get; set; }
+        public string Id_Grupo { get; set; }
+        
+        public string Descricao_Grupo { get; set; }
+
     }
 }
