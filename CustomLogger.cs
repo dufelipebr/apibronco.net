@@ -8,11 +8,13 @@ namespace apibronco.bronco.com.br
         private readonly string _loggerName;
         private readonly CustomLoggerProviderConfiguration _cfg;
         private ILogRepository _logrepository;
+        //private readonly ILogRepository logRepository;
 
-        public CustomLogger(string nome, CustomLoggerProviderConfiguration cfg) 
+        public CustomLogger(string nome, CustomLoggerProviderConfiguration cfg, ILogRepository logRepository) 
         {
             this._cfg = cfg;
             this._loggerName = nome;
+            this._logrepository = logRepository;
         }
 
         public IDisposable? BeginScope<TState>(TState state) where TState : notnull
@@ -33,8 +35,15 @@ namespace apibronco.bronco.com.br
                 Func<TState, Exception?, string> formatter)
         {
             var mensagem = string.Format($"{DateTime.Now}-{logLevel}:{eventId} - {formatter(state, exception)}");
-            _
-            EscreverArquivo(mensagem);
+            
+            _logrepository.Cadastrar(new Entity.LogInfo() { 
+                Mensagem = mensagem, 
+                Data_Log = DateTime.Now, 
+                Tipo_Log = logLevel.ToString(),
+                Module_Name = "API",
+                Stack_Trace = (exception != null ? exception.StackTrace : "" )
+            });
+            //EscreverArquivo(mensagem);
         }
 
         //private void EscreverArquivo(string mensagem)

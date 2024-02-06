@@ -57,15 +57,10 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddScoped<IPropostaRepository, PropostaRepository>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddScoped<ILogRepository, LogRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 
 
-builder.Logging.ClearProviders();
-builder.Logging.AddProvider(
-        new CustomLoggerProvider(
-                new CustomLoggerProviderConfiguration(){ LogLever = LogLevel.Information}
-        )
-);
 
 var configuration = new ConfigurationBuilder()
 .AddJsonFile("appsettings.json")
@@ -89,6 +84,19 @@ builder.Services.AddAuthentication(x =>
         ValidateAudience = false
     };
 });
+
+
+LogRepository logRepository = new LogRepository(configuration);
+
+
+builder.Logging.ClearProviders();
+builder.Logging.AddProvider(
+        new CustomLoggerProvider(
+                new CustomLoggerProviderConfiguration() { LogLever = LogLevel.Information },
+                logRepository
+        )
+);
+
 
 
 var app = builder.Build();

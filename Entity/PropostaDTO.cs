@@ -1,12 +1,7 @@
 ﻿namespace apibronco.bronco.com.br.Entity
 {
-    public class Proposta : Entidade
+    public class PropostaDTO 
     {
-        public Proposta(PropostaDTO prop)
-        {
-            this.Id_Status_Proposta = prop.Id_Status_Proposta;
-            
-        }
         //public StatusProposta StatusProposta { get; set; }
         public int Id_Status_Proposta { get; set; }
         public string Codigo_Interno { get; }
@@ -18,9 +13,19 @@
         //public string Codigo_Apolice { get; set; }
 
         public string Nome_Segurado { get; set; }
+
+        public string Nome_Social_Segurado { get; set; }
+
+        public int Sexo { get; set; } // 1- Masc, 2-Fem, 3-Outros
         public string CPF_CNPJ_Segurado { get; set; }
         public char Tipo_Segurado { get; set; } // J - Juridica P- Fisica 
         public string RG_Segurado { get; set; }
+        public DateTime Data_Emissao_RG { get; set; }
+
+        public string Profissao_Segurado { get; set; }
+
+        public decimal Renda_Mensal_Segurado{ get; set; }
+
 
         public DateTime Data_Nascimento_Segurado { get; set; }
         public string Endereco_Segurado_Logradouro { get; set; }
@@ -38,7 +43,9 @@
         public string Celular_Segurado { get; set; }
 
 
-        public int Id_Condicao_Pagamento { get; set; } // 1-DebitoEmConta, 2-Boleto, 3-Credito 
+        public int Forma_Pagamento { get; set; } // 0-DebitoEmConta, 1-Boleto, 2-Credito 
+
+        public int Parcela { get; set; }
 
         public DateTime Data_Emissao { get; set; }
 
@@ -48,11 +55,16 @@
 
         public DateTime Data_Assinatura_Proposta { get; set; }
 
-        public string Moeda { get; set; } // Default BRL 
-        
+        //public string Moeda { get; set; } // Default BRL 
+
+        public int Id_Ramo_Principal { get; set; } // id do ramo principal susep -- fixo 
         public string Codigo_Produto { get; set; } // codigo produto do seguro por exemplo VIDA01 
         
         public string UF_Risco_Principal { get; set; } // provalmente vai seguir endereço do segurado
+
+        public decimal Valor_Premio { get; set; }
+
+        public decimal Valor_Total_Segurado { get; set; }
 
         /// <summary>
         /// public string Codigo_Interno_Susep { get; set; } // vai g

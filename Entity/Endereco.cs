@@ -1,6 +1,8 @@
-﻿namespace apibronco.bronco.com.br.Entity
+﻿using apibronco.bronco.com.br.Interfaces;
+
+namespace apibronco.bronco.com.br.Entity
 {
-    public class Endereco : Entidade
+    public class Endereco : Entidade, IEntidade
     {
 
         public string Rua { get; set; }
@@ -12,7 +14,7 @@
 
         public bool IsValid()
         {
-            return base.IsValid();
+            return true;
         }
     }
 }
