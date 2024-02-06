@@ -28,6 +28,18 @@ namespace apibronco.bronco.com.br.Controllers
         }
 
         /// <summary>
+        /// checkar ws funcionando
+        /// </summary>
+        //[Authorize]
+        [HttpGet("check_service")]
+        //public IEnumerable<Proposta> GetPropostaList()
+        public IActionResult Check_Service()
+        {
+            return Ok("Ok");
+        }
+
+
+        /// <summary>
         /// listar investimentos cadastrados no sistema. acesso somente autorizado via token.
         /// </summary>
         /// <returns>IActionResult com array de investimentos IList/<Investimento/></returns>

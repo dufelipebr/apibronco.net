@@ -36,13 +36,13 @@ namespace apibronco.bronco.com.br
         {
             var mensagem = string.Format($"{DateTime.Now}-{logLevel}:{eventId} - {formatter(state, exception)}");
             
-            _logrepository.Cadastrar(new Entity.LogInfo() { 
-                Mensagem = mensagem, 
-                Data_Log = DateTime.Now, 
-                Tipo_Log = logLevel.ToString(),
-                Module_Name = "API",
-                Stack_Trace = (exception != null ? exception.StackTrace : "" )
-            });
+            //_logrepository.Cadastrar(new Entity.LogInfo() { 
+            //    Mensagem = mensagem, 
+            //    Data_Log = DateTime.Now, 
+            //    Tipo_Log = logLevel.ToString(),
+            //    Module_Name = "API",
+            //    Stack_Trace = (exception != null ? exception.StackTrace : "" )
+            //});
             //EscreverArquivo(mensagem);
         }
 
