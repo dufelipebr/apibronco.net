@@ -27,23 +27,22 @@ namespace apibronco.bronco.com.br
             return true;
         }
 
-        public void Log<TState>(
-                LogLevel logLevel, 
-                EventId eventId, 
-                TState state, 
-                Exception? exception, 
-                Func<TState, Exception?, string> formatter)
+        public void Log<TState>(LogLevel logLevel,  EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
         {
             var mensagem = string.Format($"{DateTime.Now}-{logLevel}:{eventId} - {formatter(state, exception)}");
-            
-            //_logrepository.Cadastrar(new Entity.LogInfo() { 
-            //    Mensagem = mensagem, 
-            //    Data_Log = DateTime.Now, 
-            //    Tipo_Log = logLevel.ToString(),
-            //    Module_Name = "API",
-            //    Stack_Trace = (exception != null ? exception.StackTrace : "" )
-            //});
-            //EscreverArquivo(mensagem);
+
+            if (logLevel == LogLevel.Error) 
+            { 
+                _logrepository.Cadastrar(new Entity.LogInfo()
+                {
+                    Mensagem = mensagem,
+                    Data_Log = DateTime.Now,
+                    Tipo_Log = logLevel.ToString(),
+                    Module_Name = "API",
+                    Stack_Trace = (exception != null ? exception.StackTrace : "")
+                });
+            }
+            ////EscreverArquivo(mensagem); // utilizado para escrever no arquivo ao inves da base de dados
         }
 
         //private void EscreverArquivo(string mensagem)
