@@ -22,7 +22,7 @@
         {
         }
 
-        public Usuario(int _id, String _nome) {
+        public Usuario(string _id, String _nome) {
             this.Id = _id;
             this.Nome = _nome;
         }

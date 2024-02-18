@@ -5,6 +5,7 @@ using apibronco.bronco.com.br.Interfaces;
 using System.Diagnostics.Eventing.Reader;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
+using apibronco.bronco.com.br.Services;
 
 namespace apibronco.bronco.com.br.Controllers
 {
@@ -13,6 +14,7 @@ namespace apibronco.bronco.com.br.Controllers
     public class PropostaControler : ControllerBase
     {
         private IPropostaRepository _propostaRepository;
+        private IGenericListRepository _genericRepository;
         //private ICarteiraRepository _carteiraRepository;
         //private IUsuarioRepository _usuarioRepository;
         //private ILoggerFactory _loggerFactory;
@@ -20,11 +22,11 @@ namespace apibronco.bronco.com.br.Controllers
         private readonly ILogger<PropostaControler> _logger;
 
 
-        public PropostaControler(IPropostaRepository repository,  ILogger<PropostaControler> logger)
+        public PropostaControler(IPropostaRepository repository, IGenericListRepository genericListRepository, ILogger<PropostaControler> logger)
         {
             _propostaRepository = repository;
-            //_usuarioRepository = usuarioRepository;
             _logger = logger;
+            _genericRepository = genericListRepository;
         }
 
         /// <summary>
@@ -49,9 +51,9 @@ namespace apibronco.bronco.com.br.Controllers
         /// <response code="403">N�o autorizado</response>
         /// <response code="501">Erro</response>
         //[Authorize]
-        [HttpGet("listar_propostas")]
+        [HttpGet("listar_propostas/{usuario_id:int}")]
         //public IEnumerable<Proposta> GetPropostaList()
-        public IActionResult Get_Proposta_List(string userID)
+        public IActionResult GetPropostaList(string usuario_id)
         {
             _logger.Log(LogLevel.Information, "Iniciando GetPropostaList...");
             IEnumerable<Proposta> list;
@@ -79,27 +81,19 @@ namespace apibronco.bronco.com.br.Controllers
         //[Authorize]
         [HttpGet("listar_condicoes_pagto")]
         //public IEnumerable<Proposta> GetFormaPagto()
-        public IActionResult Get_Condicoes_Pagamento()
+        public IActionResult GetCondicoesPagamento()
         {
             _logger.Log(LogLevel.Information, "Iniciando GetCondicoesPagamento...");
-            List<CondicaoPagto> lst;
+            
             try
             {
-                //Pro
-                //list = _propostaRepository.ObterTodos();
-                lst = new List<CondicaoPagto>();
-                lst.Add(new CondicaoPagto { Codigo = "Bol", Descricao = "Boleto", Id = 1, MaxParcelamento = 1 });
-                //lst.Add(new CondicaoPagto { Codigo = "Bol", Descricao = "Debito", Id = 1 });
-                //lst.Add(new CondicaoPagto { Codigo = "Bol", Descricao = "Credito", Id = 1 });
-
-                //return lst;
+                return Ok(_genericRepository.ObterCondicaoPagtos());
             }
             catch (Exception ex)
             {
-                _logger.LogError($"falha ao executar _propostaRepository.GetPropostaList() : {ex.Message}");
+                _logger.LogError($"falha ao executar GetCondicoesPagamento : {ex.Message}");
                 return BadRequest(ex.Message);
             }
-            return Ok(lst);
         }
 
         /// <summary>
@@ -113,205 +107,98 @@ namespace apibronco.bronco.com.br.Controllers
         /// <response code="501">Erro</response>
         //[Authorize]
         [HttpGet("listar_ramos_validos")]
-        //public IEnumerable<Proposta> GetFormaPagto()
         //https://www2.susep.gov.br/safe/scripts/bnweb/bnmapi.exe?router=upload/8548
-        public IActionResult Get_Valid_Ramos()
+        public IActionResult GetValidRamos()
         {
-            _logger.Log(LogLevel.Information, "Iniciando GetCondicoesPagamento...");
-            List<Ramo> lst;
+            _logger.Log(LogLevel.Information, "Iniciando GetValidRamos...");
+
             try
             {
-                //Pro
-                //list = _propostaRepository.ObterTodos();
-                lst = new List<Ramo>();
-                lst.Add(new Ramo { Codigo_Ramo = "91", Descricao_Ramo = "Vida", Id = 1, Id_Grupo = "13", Descricao_Grupo = "Pessoas Individual" });
-                //lst.Add(new CondicaoPagto { Codigo = "Bol", Descricao = "Debito", Id = 1 });
-                //lst.Add(new CondicaoPagto { Codigo = "Bol", Descricao = "Credito", Id = 1 });
-
-                //return lst;
+                return Ok(_genericRepository.ObterGrupoRamos());
             }
             catch (Exception ex)
             {
-                _logger.LogError($"falha ao executar _propostaRepository.GetPropostaList() : {ex.Message}");
+                _logger.LogError($"falha ao executar GetValidRamos : {ex.Message}");
                 return BadRequest(ex.Message);
             }
-            return Ok(lst);
         }
 
         //[Authorize]
         [HttpPost("criar_proposta")]
-        public IActionResult Create_Proposta(PropostaDTO prop)
+        public IActionResult CreateProposta(Proposta prop)
         {
-            _logger.Log(LogLevel.Information, "Iniciando CriarProposta...");
-
-            //Regex cpfRx = new Regex(@"^(((\d{3}).(\d{3}).(\d{3})-(\d{2}))?((\d{2}).(\d{3}).(\d{3})/(\d{4})-(\d{2}))?)*$", RegexOptions.None);
-            //Regex emailRx = new Regex(@"^([-a-zA-Z0-9_-]*@(gmail|yahoo|ymail|rocketmail|bol|hotmail|live|msn|ig|globomail|oi|pop|inteligweb|r7|folha|zipmail).(com|info|gov|net|org|tv)(.[-a-z]{2})?)*$");
-
-            //Carteira ct = (Carteira)_carteiraRepository.GetCarteiraByID(newCarteira.CodigoConta, newCarteira.DigitoConta);
-            //if (ct != null) throw new Exception("erro02: carteira já existente");
-
-            //if (newProposta.Ramo == null)
-            //    throw new Exception("CriarProposta.erro1: Ramo não informado");
-
-            //if (newProposta.Moeda == "BRL")
-            //    throw new Exception("CriarProposta.erro2: BRL deve ser informado para moeda");
-
-            //if (newProposta.Coberturas == null)
-            //    throw new Exception("CriarProposta.erro3: Coberturas devem ser informadas");
-
-            //if (newProposta.Codigo_Empresa == null)
-            //    throw new Exception("CriarProposta.erro4: Codigo da Empresa deve ser informado");
-
-            //if (newProposta.Forma_Pagamento == null)
-            //    throw new Exception("CriarProposta.erro5: Forma de pagamento deve ser informado");
-
-            //if (newProposta.Codigo_Produto == null)
-            //    throw new Exception("CriarProposta.erro6: Codigo do Produto");
+            _logger.Log(LogLevel.Information, "Iniciando CreateProposta...");
 
             try
             {
-                Proposta p = new Proposta(prop);
-
-                //_propostaRepository.Cadastrar(p);
+                List<CondicaoPagto> condicoes  = _genericRepository.ObterCondicaoPagtos();
+                List<Grupo_Ramo> ramos = _genericRepository.ObterGrupoRamos();
+                List<Cobertura> coberturas = _genericRepository.ObterCoberturas();
+                //prop.
+                PropostaService service = new PropostaService(condicoes, ramos, coberturas);
+                service.CriarProposta(prop);
+                _propostaRepository.Cadastrar(prop);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"falha ao executar Create_Proposta() : {ex.Message}");
-                return BadRequest();
+                _logger.LogError($"falha ao executar CreateProposta() : {ex.Message}");
+                return BadRequest(ex.Message);
             }
-            return Ok(new PropostaResponse());
+            return Ok("ok");
         }
 
         //[Authorize]
         [HttpPut("editar_proposta")]
-        public IActionResult Alter_Proposta(PropostaDTO prop)
+        public IActionResult AlterProposta(Proposta prop)
         {
-            _logger.Log(LogLevel.Information, "Iniciando CriarProposta...");
-
-            //Regex cpfRx = new Regex(@"^(((\d{3}).(\d{3}).(\d{3})-(\d{2}))?((\d{2}).(\d{3}).(\d{3})/(\d{4})-(\d{2}))?)*$", RegexOptions.None);
-            //Regex emailRx = new Regex(@"^([-a-zA-Z0-9_-]*@(gmail|yahoo|ymail|rocketmail|bol|hotmail|live|msn|ig|globomail|oi|pop|inteligweb|r7|folha|zipmail).(com|info|gov|net|org|tv)(.[-a-z]{2})?)*$");
-
-            //Carteira ct = (Carteira)_carteiraRepository.GetCarteiraByID(newCarteira.CodigoConta, newCarteira.DigitoConta);
-            //if (ct != null) throw new Exception("erro02: carteira já existente");
-
-            //if (newProposta.Ramo == null)
-            //    throw new Exception("CriarProposta.erro1: Ramo não informado");
-
-            //if (newProposta.Moeda == "BRL")
-            //    throw new Exception("CriarProposta.erro2: BRL deve ser informado para moeda");
-
-            //if (newProposta.Coberturas == null)
-            //    throw new Exception("CriarProposta.erro3: Coberturas devem ser informadas");
-
-            //if (newProposta.Codigo_Empresa == null)
-            //    throw new Exception("CriarProposta.erro4: Codigo da Empresa deve ser informado");
-
-            //if (newProposta.Forma_Pagamento == null)
-            //    throw new Exception("CriarProposta.erro5: Forma de pagamento deve ser informado");
-
-            //if (newProposta.Codigo_Produto == null)
-            //    throw new Exception("CriarProposta.erro6: Codigo do Produto");
+            _logger.Log(LogLevel.Information, "Iniciando AlterProposta...");
 
             try
             {
-                Proposta p = new Proposta(prop);
+                //   Proposta p = new Proposta(prop);
+                List<CondicaoPagto> condicoes = _genericRepository.ObterCondicaoPagtos();
+                List<Grupo_Ramo> ramos = _genericRepository.ObterGrupoRamos();
+                List<Cobertura> coberturas = _genericRepository.ObterCoberturas();
 
-                //_propostaRepository.Cadastrar(p);
+                Proposta original = _propostaRepository.ObterPorId(prop.Id);
+
+                if (original == null)
+                    throw new Exception("Não encontrado original");
+
+                PropostaService service = new PropostaService(condicoes, ramos, coberturas);
+                service.AlterarProposta(prop, original);
+                _propostaRepository.Alterar(prop);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"falha ao executar Alter_Proposta : {ex.Message}");
-                return BadRequest();
-            }
-            return Ok(new PropostaResponse());
-        }
-
-        [HttpDelete("delete_proposta")]
-        public IActionResult Delete_Proposta(int id_proposta)
-        {
-            _logger.Log(LogLevel.Information, "Iniciando Delete_Proposta...");
-
-            //Regex cpfRx = new Regex(@"^(((\d{3}).(\d{3}).(\d{3})-(\d{2}))?((\d{2}).(\d{3}).(\d{3})/(\d{4})-(\d{2}))?)*$", RegexOptions.None);
-            //Regex emailRx = new Regex(@"^([-a-zA-Z0-9_-]*@(gmail|yahoo|ymail|rocketmail|bol|hotmail|live|msn|ig|globomail|oi|pop|inteligweb|r7|folha|zipmail).(com|info|gov|net|org|tv)(.[-a-z]{2})?)*$");
-
-            //Carteira ct = (Carteira)_carteiraRepository.GetCarteiraByID(newCarteira.CodigoConta, newCarteira.DigitoConta);
-            //if (ct != null) throw new Exception("erro02: carteira já existente");
-
-            //if (newProposta.Ramo == null)
-            //    throw new Exception("CriarProposta.erro1: Ramo não informado");
-
-            //if (newProposta.Moeda == "BRL")
-            //    throw new Exception("CriarProposta.erro2: BRL deve ser informado para moeda");
-
-            //if (newProposta.Coberturas == null)
-            //    throw new Exception("CriarProposta.erro3: Coberturas devem ser informadas");
-
-            //if (newProposta.Codigo_Empresa == null)
-            //    throw new Exception("CriarProposta.erro4: Codigo da Empresa deve ser informado");
-
-            //if (newProposta.Forma_Pagamento == null)
-            //    throw new Exception("CriarProposta.erro5: Forma de pagamento deve ser informado");
-
-            //if (newProposta.Codigo_Produto == null)
-            //    throw new Exception("CriarProposta.erro6: Codigo do Produto");
-
-            try
-            {
-                //Proposta p = new Proposta(prop);
-
-                //_propostaRepository.Cadastrar(p);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"falha ao executar Delete_Proposta(): {ex.Message}");
+                _logger.LogError($"falha ao executar AlterProposta : {ex.Message}");
                 return BadRequest();
             }
             return Ok("ok");
         }
 
-
-        [HttpPost("criar_invoice")]
-        public IActionResult Create_Invoice(InvoiceDTO prop)
+        //[Authorize]
+        [HttpDelete("delete_proposta/{proposta_codigo_interno}")]
+        public IActionResult DeleteProposta(string proposta_codigo_interno)
         {
-            _logger.Log(LogLevel.Information, "Iniciando Create_Customer...");
-
-            //Regex cpfRx = new Regex(@"^(((\d{3}).(\d{3}).(\d{3})-(\d{2}))?((\d{2}).(\d{3}).(\d{3})/(\d{4})-(\d{2}))?)*$", RegexOptions.None);
-            //Regex emailRx = new Regex(@"^([-a-zA-Z0-9_-]*@(gmail|yahoo|ymail|rocketmail|bol|hotmail|live|msn|ig|globomail|oi|pop|inteligweb|r7|folha|zipmail).(com|info|gov|net|org|tv)(.[-a-z]{2})?)*$");
-
-            //Carteira ct = (Carteira)_carteiraRepository.GetCarteiraByID(newCarteira.CodigoConta, newCarteira.DigitoConta);
-            //if (ct != null) throw new Exception("erro02: carteira já existente");
-
-            //if (newProposta.Ramo == null)
-            //    throw new Exception("CriarProposta.erro1: Ramo não informado");
-
-            //if (newProposta.Moeda == "BRL")
-            //    throw new Exception("CriarProposta.erro2: BRL deve ser informado para moeda");
-
-            //if (newProposta.Coberturas == null)
-            //    throw new Exception("CriarProposta.erro3: Coberturas devem ser informadas");
-
-            //if (newProposta.Codigo_Empresa == null)
-            //    throw new Exception("CriarProposta.erro4: Codigo da Empresa deve ser informado");
-
-            //if (newProposta.Forma_Pagamento == null)
-            //    throw new Exception("CriarProposta.erro5: Forma de pagamento deve ser informado");
-
-            //if (newProposta.Codigo_Produto == null)
-            //    throw new Exception("CriarProposta.erro6: Codigo do Produto");
+            _logger.Log(LogLevel.Information, "Iniciando DeleteProposta...");
 
             try
             {
-                //Cliente p = new Proposta(prop);
+                var p = _propostaRepository.ObterPorCodigoInterno(proposta_codigo_interno);
+                if (p == null)
+                    throw new Exception("proposta_codigo_interno não encontrado");
 
-                //_propostaRepository.Cadastrar(p);
+                _propostaRepository.Deletar(p);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"falha ao executar Create_Customer() : {ex.Message}");
+                _logger.LogError($"falha ao executar DeleteProposta(): {ex.Message}");
                 return BadRequest();
             }
             return Ok("ok");
         }
+       
     }
 }
 
