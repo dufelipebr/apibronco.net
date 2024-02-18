@@ -1,12 +1,19 @@
 ﻿using apibronco.bronco.com.br.Interfaces;
+using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson;
 
 namespace apibronco.bronco.com.br.Entity
 {
     public class Entidade 
     {
-        public int Id { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; }
         public DateTime CreatedOn { get; set; }
         public DateTime LastUpdateOn { get; set; }
+
+        public int Id_Status { get; set; }
+
+        public string Id_Object_Type { get; set; }
 
         //public bool IsValid() 
         //{

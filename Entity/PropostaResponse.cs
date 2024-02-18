@@ -2,8 +2,8 @@
 {
     public class PropostaResponse
     {
-        PropostaDTO Proposta { get; set; }
-        CoberturaDTO Cobertura { get; set; }
+        //PropostaDTO Proposta { get; set; }
+        //CoberturaDTO Cobertura { get; set; }
 
     }
 }

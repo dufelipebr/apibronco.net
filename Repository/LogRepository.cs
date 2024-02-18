@@ -58,7 +58,7 @@ namespace apibronco.bronco.com.br.Repository
             throw new NotImplementedException();
         }
 
-        public override LogInfo ObterPorId(int id)
+        public override LogInfo ObterPorId(string id)
         {
             throw new NotImplementedException();
         }
@@ -105,7 +105,7 @@ namespace apibronco.bronco.com.br.Repository
                 {
                     lst.Add(new LogInfo()
                     {
-                        Id = (int)rd["Id"],
+                        //Id = rd["Id"].ToString(),
                         Mensagem = rd["Mensagem"].ToString(),
                         Data_Log = (DateTime) rd["Data_log"],
                         Tipo_Log = rd["Tipo_Log"].ToString(),

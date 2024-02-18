@@ -98,7 +98,7 @@ namespace apibronco.bronco.com.br.Repository
             }
         }
 
-        public override Usuario ObterPorId(int id)
+        public override Usuario ObterPorId(string id)
         {
             return ObterUsuarios(id).FirstOrDefault();
         }
@@ -108,7 +108,7 @@ namespace apibronco.bronco.com.br.Repository
             return ObterUsuarios(null);
         }
 
-        protected IList<Usuario> ObterUsuarios(int? id)
+        protected IList<Usuario> ObterUsuarios(string? id)
         {
             IList<Usuario> list = new List<Usuario>();
             using (var dbConnection = new SqlConnection(ConnectionString))
@@ -128,7 +128,7 @@ namespace apibronco.bronco.com.br.Repository
                     while (rd.Read())
                     {
                         list.Add(new Usuario() { 
-                            Id = Int32.Parse(rd["Id"].ToString()), 
+                            Id = rd["Id"].ToString(), 
                             Nome = rd["Nome"].ToString(), 
                             Email = rd["Email"].ToString(),
                             Senha = rd["Senha"].ToString(),
@@ -169,11 +169,11 @@ namespace apibronco.bronco.com.br.Repository
                 {
                     user = new Usuario()
                     {
-                        Id = Int32.Parse(rd["Id"].ToString()),
-                        Nome = rd["Nome"].ToString(),
-                        Email = rd["Email"].ToString(),
-                        Senha = rd["Senha"].ToString(),
-                        TipoPermissao = (EnumTipoAcesso)Int32.Parse(rd["TipoAcesso"].ToString())
+                        //Id = (rd["Id"].ToString(),
+                        //Nome = rd["Nome"].ToString(),
+                        //Email = rd["Email"].ToString(),
+                        //Senha = rd["Senha"].ToString(),
+                        //TipoPermissao = (EnumTipoAcesso)Int32.Parse(rd["TipoAcesso"].ToString())
                     };
                 }
             }

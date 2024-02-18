@@ -1,6 +1,6 @@
 ﻿namespace apibronco.bronco.com.br.Entity
 {
-    public class PropostaDTO 
+    public abstract class PropostaDTO_Depreceated
     {
         //public StatusProposta StatusProposta { get; set; }
         public int Id_Status_Proposta { get; set; }
