@@ -53,5 +53,5 @@ jobs:
         with:
           app-name: 'broncoapi'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D69F53C1F468480CB91E264D7906C797 }}
+          publish-profile: ${{ secrets.PUBLISH_PROFILE }}
           package: .
