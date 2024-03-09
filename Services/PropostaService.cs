@@ -20,6 +20,10 @@ namespace apibronco.bronco.com.br.Services
             p.Id = String.Empty;
             p.CreatedOn = DateTime.Now;
             p.LastUpdateOn = DateTime.MinValue;
+            p.Id_Object_Type = "PROPO";
+            p.Id_Status = 1; // Active
+            p.Moeda = "BRL";
+            
 
             if (p.IsValid())
                 ValidarProposta(p);
@@ -40,7 +44,7 @@ namespace apibronco.bronco.com.br.Services
             p.Codigo_Grupo_Ramo = dest.Codigo_Grupo_Ramo;
             p.Status_Proposta = dest.Status_Proposta;
             p.UF_Risco_Principal = dest.UF_Risco_Principal;
-            p.Coberturas = dest.Coberturas;
+            //p.Coberturas = dest.Coberturas;
             p.LastUpdateOn = DateTime.Now;// Setar Com Data Atual 
 
 
@@ -61,8 +65,8 @@ namespace apibronco.bronco.com.br.Services
             if (p.Moeda != "BRL")
                 throw new Exception("BRL deve ser informado para moeda");
 
-            if (p.Coberturas == null || p.Coberturas.Length == 0)
-                throw new Exception("Coberturas devem ser informadas");
+            //if (p.Coberturas == null || p.Coberturas.Length == 0)
+            //    throw new Exception("Coberturas devem ser informadas");
 
             if (p.Codigo_Empresa == null)
                 throw new Exception("Codigo da Empresa deve ser informado");
@@ -73,17 +77,17 @@ namespace apibronco.bronco.com.br.Services
             if (p.Codigo_Produto == null)
                 throw new Exception("Codigo do Produto");
 
-            var cond = _validCondicoes.FirstOrDefault(x => x.Id == p.Codigo_Condicao_Pagto);
+            var cond = _validCondicoes.FirstOrDefault(x => x.Codigo == p.Codigo_Condicao_Pagto);
             if (cond == null)
                 throw new Exception("Codigo_Condicao_Pagamento invalida");
 
-            var ramos = _validRamos.FirstOrDefault(x => x.Id == p.Codigo_Grupo_Ramo);
+            var ramos = _validRamos.FirstOrDefault(x => x.Codigo_Ramo == p.Codigo_Grupo_Ramo);
             if (ramos == null)
                 throw new Exception("CriarProposta.erro8: Id_Ramo invalida");
 
-            foreach (var cob in p.Coberturas)
-                if (_validCoberturas.FirstOrDefault(x => x.Codigo == cob.Codigo) == null)
-                    throw new Exception("CriarProposta.erro8: Cobertura invalida");
+            //foreach (var cob in p.Coberturas)
+            //    if (_validCoberturas.FirstOrDefault(x => x.Codigo == cob.Codigo) == null)
+            //        throw new Exception("CriarProposta.erro8: Cobertura invalida");
 
             return true;
         }

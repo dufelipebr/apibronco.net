@@ -52,6 +52,13 @@ namespace apibronco.bronco.com.br.Repository
             return allDocs;
         }
 
+        public string TestConnection()
+        {
+            var client = new MongoClient(ConnectionString);
+            var db = client.GetDatabase(DbName);
+            return "";
+        }
+
 
 
     }
