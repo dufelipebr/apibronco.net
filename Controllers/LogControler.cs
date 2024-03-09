@@ -54,6 +54,7 @@ namespace apibronco.bronco.com.br.Controllers
         /// <response code="403">N�o autorizado</response>
         /// <response code="501">Erro</response>
         //[Authorize]
+        //https://apibroncodev.azurewebsites.net/log/listar_logs
         [HttpGet("listar_logs")]
         public IActionResult GetLogInfoList()
         {

@@ -37,7 +37,7 @@ namespace apibronco.bronco.com.br.Controllers
         //public IEnumerable<Proposta> GetPropostaList()
         public IActionResult Check_Service()
         {
-            return Ok("Ok");
+            return Ok($"Ok:{_genericRepository.TestConnection()}");
         }
 
 
@@ -51,9 +51,9 @@ namespace apibronco.bronco.com.br.Controllers
         /// <response code="403">N�o autorizado</response>
         /// <response code="501">Erro</response>
         //[Authorize]
-        [HttpGet("listar_propostas/{usuario_id:int}")]
+        [HttpGet("listar_propostas")]
         //public IEnumerable<Proposta> GetPropostaList()
-        public IActionResult GetPropostaList(string usuario_id)
+        public IActionResult GetPropostaList()
         {
             _logger.Log(LogLevel.Information, "Iniciando GetPropostaList...");
             IEnumerable<Proposta> list;

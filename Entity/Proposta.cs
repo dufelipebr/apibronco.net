@@ -17,7 +17,7 @@
         public string Codigo_Empresa { get; set; }
         public string Codigo_Grupo_Ramo { get; set; }
 
-        public Cobertura[] Coberturas { get; set; } // lista de coberturas coberta na apolice/proposta
+        //public Cobertura[] Coberturas { get; set; } // lista de coberturas coberta na apolice/proposta
 
         //public string Codigo_Apolice { get; set; }
 
