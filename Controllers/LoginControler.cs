@@ -21,18 +21,27 @@ namespace apibronco.bronco.com.br.Controllers
         [HttpPost]
         public IActionResult Autenticar([FromBody] LoginDTO login)
         {
-            var usuario = _usuarioRepository.ObterPorNomeUsuarioESenha(login.Email, login.Senha);
+            //var usuario = _usuarioRepository.ObterPorNomeUsuarioESenha(login.Email, login.Senha);
+            Usuario usr;
+            if (login.Email == "du.felipe.br@gmail.com" && login.Senha == "adm")
+            { 
+                usr = new Usuario("1", "carlos");
+                usr.Email = "du.felipe.br@gmail.com";
+                usr.Senha = "adm";
+            }
+            else
+                usr = null;
 
-            if (usuario == null)
+            if (usr == null)
                 return NotFound(new { mensagem = "Usuario e ou Senha invalidos" });
             
-            var token = _tokenService.GerarToken(usuario);
+            var token = _tokenService.GerarToken(usr);
 
-            usuario.Senha = null;
+            usr.Senha = null;
 
             return Ok(new
             {
-                Usuario = usuario, 
+                Usuario = usr, 
                 Token = token
             });
         }
