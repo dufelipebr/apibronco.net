@@ -9,12 +9,25 @@ using apibronco.bronco.com.br.Services;
 using System.Data.SqlClient;
 using System.Reflection;
 using System.Text;
+using apibronco.bronco.com.br.HostedService;
 
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      policy =>
+                      {
+                          policy.WithOrigins("http://localhost:3000",
+                                              "http://www.contoso.com");
+                      });
+});
 
+// Add services to the container.
+builder.Services.AddHostedService<ConsumerQueue>();
 builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 //builder.Services.AddSwaggerGen();
@@ -57,7 +70,7 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddScoped<IPropostaRepository, PropostaRepository>();
 builder.Services.AddScoped<IGenericListRepository, MongodbGenericRepository>();
-builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddScoped<IUsuarioRepository, AZUsuario>();
 builder.Services.AddScoped<ILogRepository, LogRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 
@@ -100,7 +113,11 @@ builder.Logging.AddProvider(
 
 
 
+
 var app = builder.Build();
+
+
+app.UseCors(MyAllowSpecificOrigins);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

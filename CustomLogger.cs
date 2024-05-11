@@ -1,5 +1,6 @@
 ﻿
 using apibronco.bronco.com.br.Interfaces;
+using System.Diagnostics;
 
 namespace apibronco.bronco.com.br
 {
@@ -41,6 +42,7 @@ namespace apibronco.bronco.com.br
                     Module_Name = "API",
                     Stack_Trace = (exception != null ? exception.StackTrace : "")
                 });
+                Debug.WriteLine(mensagem);
             }
             ////EscreverArquivo(mensagem); // utilizado para escrever no arquivo ao inves da base de dados
         }

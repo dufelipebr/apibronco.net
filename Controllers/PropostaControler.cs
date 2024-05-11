@@ -53,7 +53,7 @@ namespace apibronco.bronco.com.br.Controllers
         //[Authorize]
         [HttpGet("listar_propostas")]
         //public IEnumerable<Proposta> GetPropostaList()
-        public IActionResult GetPropostaList()
+        public IActionResult GetPropostaList(int idUser)
         {
             _logger.Log(LogLevel.Information, "Iniciando GetPropostaList...");
             IEnumerable<Proposta> list;
