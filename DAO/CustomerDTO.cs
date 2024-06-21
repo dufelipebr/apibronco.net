@@ -1,4 +1,4 @@
-﻿namespace apibronco.bronco.com.br.Entity
+﻿namespace apibronco.bronco.com.br.DAO
 {
     public class InvoiceDTO
     {
@@ -8,7 +8,7 @@
         //status: z.enum(['pending', 'paid']),
         //date: z.string (),
 
-        public  string id  { get; set; }
+        public string id { get; set; }
 
         public string customerId { get; set; }
 

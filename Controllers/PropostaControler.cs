@@ -6,6 +6,7 @@ using System.Diagnostics.Eventing.Reader;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using apibronco.bronco.com.br.Services;
+using apibronco.bronco.com.br.DAO;
 
 namespace apibronco.bronco.com.br.Controllers
 {
@@ -13,6 +14,7 @@ namespace apibronco.bronco.com.br.Controllers
     [Route("Proposta")]
     public class PropostaControler : ControllerBase
     {
+        private IPagamentoRepository _pagamentoRepository;
         private IPropostaRepository _propostaRepository;
         private IGenericListRepository _genericRepository;
         //private ICarteiraRepository _carteiraRepository;
@@ -22,11 +24,12 @@ namespace apibronco.bronco.com.br.Controllers
         private readonly ILogger<PropostaControler> _logger;
 
 
-        public PropostaControler(IPropostaRepository repository, IGenericListRepository genericListRepository, ILogger<PropostaControler> logger)
+        public PropostaControler(IPropostaRepository repository, IGenericListRepository genericListRepository, IPagamentoRepository pagamentoRepository, ILogger<PropostaControler> logger)
         {
             _propostaRepository = repository;
             _logger = logger;
             _genericRepository = genericListRepository;
+            _pagamentoRepository = pagamentoRepository;
         }
 
         /// <summary>
@@ -51,22 +54,22 @@ namespace apibronco.bronco.com.br.Controllers
         /// <response code="403">N�o autorizado</response>
         /// <response code="501">Erro</response>
         //[Authorize]
-        [HttpGet("listar_propostas")]
+        [HttpGet("listar_propostas/{id_usuario}")]
         //public IEnumerable<Proposta> GetPropostaList()
-        public IActionResult GetPropostaList(int idUser)
+        public IActionResult GetPropostaList(int id_usuario)
         {
             _logger.Log(LogLevel.Information, "Iniciando GetPropostaList...");
-            IEnumerable<Proposta> list;
+            List<PropostaDTO> returnList = new List<PropostaDTO>();
             try
             {
-                //Pro
-                list = _propostaRepository.ObterTodos();
+                IEnumerable<Proposta> list = _propostaRepository.ObterTodos();
+                returnList = PropostaService.ConvertToDTO(list);
             }
             catch (Exception ex) {
                 _logger.LogError($"falha ao executar _propostaRepository.GetPropostaList() : {ex.Message}");
                 return BadRequest(ex.Message);
             }
-            return Ok(_propostaRepository.ObterTodos());
+            return Ok(returnList);
         }
 
         /// <summary>
@@ -125,7 +128,7 @@ namespace apibronco.bronco.com.br.Controllers
 
         //[Authorize]
         [HttpPost("criar_proposta")]
-        public IActionResult CreateProposta(Proposta prop)
+        public IActionResult CreateProposta(PropostaDTO propostaDTO)
         {
             _logger.Log(LogLevel.Information, "Iniciando CreateProposta...");
 
@@ -135,9 +138,15 @@ namespace apibronco.bronco.com.br.Controllers
                 List<Grupo_Ramo> ramos = _genericRepository.ObterGrupoRamos();
                 List<Cobertura> coberturas = _genericRepository.ObterCoberturas();
                 //prop.
+                Proposta prop = new Proposta(propostaDTO);
                 PropostaService service = new PropostaService(condicoes, ramos, coberturas);
                 service.CriarProposta(prop);
                 _propostaRepository.Cadastrar(prop);
+
+                //Pagamento pag = new Pagamento(pagamentoDTO);
+                //pag.Reference = prop.Codigo_Interno;
+                //_pagamentoRepository.Cadastrar(pag);
+
             }
             catch (Exception ex)
             {

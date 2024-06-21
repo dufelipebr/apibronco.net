@@ -1,4 +1,6 @@
-﻿namespace apibronco.bronco.com.br.Entity
+﻿using apibronco.bronco.com.br.Entity;
+
+namespace apibronco.bronco.com.br.DAO
 {
     public class CadastrarUsuarioDTO
     {
