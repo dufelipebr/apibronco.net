@@ -1,4 +1,6 @@
-﻿namespace apibronco.bronco.com.br.Entity
+﻿using apibronco.bronco.com.br.DAO;
+
+namespace apibronco.bronco.com.br.Entity
 {
     public class Usuario : Entidade
     {

@@ -4,6 +4,16 @@ namespace apibronco.bronco.com.br.Entity
 {
     public class Endereco : Entidade, IEntidade
     {
+        public Endereco(string logradouro, string numero, string complemento, string bairro, string uF, string pais, string cEP)
+        {
+            Logradouro = logradouro;
+            Numero = numero;
+            Complemento = complemento;
+            Bairro = bairro;
+            UF = uF;
+            Pais = pais;
+            CEP = cEP;
+        }
 
         public string Logradouro { get; set; }
         public string Numero { get; set; }

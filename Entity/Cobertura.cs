@@ -7,7 +7,7 @@ namespace apibronco.bronco.com.br.Entity
     {
         //public TipoCobertura Tipo_Cobertura { get; set; } //  96001- Básica-Incêndio, raio, explosão, implosão e fumaça
 
-        public string Codigo { get; set; }
+        public string Codigo_Produto { get; set; }
         public string Descricao { get; set; }
         /*        Básica-Incêndio, raio, explosão, implosão e fumaça
 Vendaval, furacão, ciclone, tornardo, granizo, impacto de veículos e queda de aeronaves
