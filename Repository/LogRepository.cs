@@ -4,7 +4,6 @@ using apibronco.bronco.com.br.Interfaces;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System;
-using apibronco.bronco.com.br.Repository.Azuredb;
 using apibronco.bronco.com.br.Repository.Mongodb;
 
 namespace apibronco.bronco.com.br.Repository

@@ -54,29 +54,29 @@ namespace apibronco.bronco.com.br.HostedService
 
         private async Task ProcessMessagesAsync(Message message, CancellationToken token)
         {
-            Console.WriteLine("### PROCESSANDO MENSAGEM FILA ###");
-            Console.WriteLine($"{DateTime.Now}");
-            Console.WriteLine($"Received message: SequenceNumber:{message.SystemProperties.SequenceNumber} Body:{Encoding.UTF8.GetString(message.Body)}");
-            try
-            {
-                Registro msg = JsonSerializer.Deserialize<Registro>(message.Body);
-                Console.WriteLine($"Registro deserializado:{msg.Email}-{msg.Nome}-{msg.Telefone}");
-                UsuarioRepository rp = new UsuarioRepository(_config);
-                CadastrarUsuarioDTO cad = new CadastrarUsuarioDTO();
-                cad.Nome = msg.Nome;
-                cad.Email = msg.Email;
-                //cad. = msg.Telefone;
-                rp.Cadastrar(new Usuario(cad));
-                Console.WriteLine($"gravou usuario:{msg.Email}-{msg.Nome}-{msg.Telefone}");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Erro ao deserializar e gravar na base:{ex.Message}");
-            }
-            //catch  (Exception ex)
+            //Console.WriteLine("### PROCESSANDO MENSAGEM FILA ###");
+            //Console.WriteLine($"{DateTime.Now}");
+            //Console.WriteLine($"Received message: SequenceNumber:{message.SystemProperties.SequenceNumber} Body:{Encoding.UTF8.GetString(message.Body)}");
+            //try
             //{
-            //    Console.WriteLine($"Erro ao gravar na base:{ex.Message}");
+            //    Registro msg = JsonSerializer.Deserialize<Registro>(message.Body);
+            //    Console.WriteLine($"Registro deserializado:{msg.Email}-{msg.Nome}-{msg.Telefone}");
+            //    UsuarioRepository rp = new UsuarioRepository(_config);
+            //    CadastrarUsuarioDTO cad = new CadastrarUsuarioDTO();
+            //    cad.Nome = msg.Nome;
+            //    cad.Email = msg.Email;
+            //    //cad. = msg.Telefone;
+            //    rp.Cadastrar(new Usuario(cad));
+            //    Console.WriteLine($"gravou usuario:{msg.Email}-{msg.Nome}-{msg.Telefone}");
             //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine($"Erro ao deserializar e gravar na base:{ex.Message}");
+            //}
+            ////catch  (Exception ex)
+            ////{
+            ////    Console.WriteLine($"Erro ao gravar na base:{ex.Message}");
+            ////}
             
             
 

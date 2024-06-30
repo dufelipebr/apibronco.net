@@ -1,7 +1,7 @@
 ﻿using apibronco.bronco.com.br.Entity;
 using apibronco.bronco.com.br.Interfaces;
 using apibronco.bronco.com.br.Repository.Mongodb;
-using apibronco.bronco.com.br.Repository.Azuredb;
+//using apibronco.bronco.com.br.Repository.Azuredb;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data.SqlClient;
