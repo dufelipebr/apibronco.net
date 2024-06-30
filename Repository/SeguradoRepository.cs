@@ -8,52 +8,43 @@ using apibronco.bronco.com.br.Repository.Mongodb;
 
 namespace apibronco.bronco.com.br.Repository
 {
-    public class UsuarioRepository : DapperRepository<Usuario>, IUsuarioRepository
+    public class Cliente_SeguradoRepository : DapperRepository<Cliente_Segurado>, ISeguradoRepository
     {
         IConfiguration _config;
-        IUsuarioRepository _repository;
-        public UsuarioRepository(IConfiguration configuration) : base(configuration)
+        ISeguradoRepository _repository;
+        public Cliente_SeguradoRepository(IConfiguration configuration) : base(configuration)
         {
             _config = configuration;
             if (TypeConnection == ConnectionType.Mongodb)
-                _repository = new MDUsuario(_config);
+                _repository = new MDCliente_Segurado(_config);
             else
                 throw new NotImplementedException();
-            // _repository = new AZUsuario(_config);
+            // _repository = new AZCliente_Segurado(_config);
         }
 
-        public override void Alterar(Usuario entidade)
+        public override void Alterar(Cliente_Segurado entidade)
         {
             _repository.Alterar(entidade);
         }
 
-        public override void Cadastrar(Usuario entidade)
+        public override void Cadastrar(Cliente_Segurado entidade)
         {
             _repository.Cadastrar(entidade);
         }
 
-        public override void Deletar(Usuario entidade)
+        public override void Deletar(Cliente_Segurado entidade)
         {
             _repository.Deletar(entidade);
         }
 
-        public override Usuario ObterPorId(string id)
+        public override Cliente_Segurado ObterPorId(string id)
         {
             return _repository.ObterPorId(id);
         }
 
-        public override IList<Usuario> ObterTodos()
+        public override IList<Cliente_Segurado> ObterTodos()
         {
             return _repository.ObterTodos();
-        }
-
-        public Usuario ObterPorNomeUsuarioESenha(
-            string email,
-            string senha)
-        {
-
-            return _repository.ObterPorNomeUsuarioESenha(email, senha);
-
         }
     }
 }

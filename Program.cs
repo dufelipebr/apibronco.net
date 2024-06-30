@@ -70,7 +70,7 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddScoped<IPropostaRepository, PropostaRepository>();
 builder.Services.AddScoped<IGenericListRepository, MongodbGenericRepository>();
-builder.Services.AddScoped<IUsuarioRepository, AZUsuario>();
+//builder.Services.AddScoped<IUsuarioRepository, AZUsuario>();
 builder.Services.AddScoped<ILogRepository, LogRepository>();
 builder.Services.AddScoped<IPagamentoRepository, PagamentoRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();

@@ -1,7 +1,7 @@
 ﻿using apibronco.bronco.com.br.Entity;
 using apibronco.bronco.com.br.Interfaces;
 using apibronco.bronco.com.br.Repository.Mongodb;
-using apibronco.bronco.com.br.Repository.Azuredb;
+//using apibronco.bronco.com.br.Repository.Azuredb;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -19,7 +19,8 @@ namespace apibronco.bronco.com.br.Repository
             if (TypeConnection == ConnectionType.Mongodb)
                 _repository = new MDProposta(_config);
             else
-                _repository = new AZProposta(_config);
+                throw new NotImplementedException();
+            //_repository = new AZProposta(_config);
         }
         public override void Alterar(Proposta entidade)
         {
