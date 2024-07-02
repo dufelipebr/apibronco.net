@@ -25,8 +25,8 @@ namespace apibronco.bronco.com.br.Controllers
         {
             _seguradoRepository = seguradoRepository;
             _usuarioRepository = usuarioRepository;
-            _seguradoRepository = seguradoRepository;
             _tokenService = tokenService;
+            _logger = logger;
         }
 
         /// <summary>
@@ -35,15 +35,18 @@ namespace apibronco.bronco.com.br.Controllers
         /// <param name="RegisterInfo">informações do usuario segurado que será criado</param>
         /// <returns></returns>
         //[Authorize]
-        [HttpPost("registro_usuario")]
-        public IActionResult registro_usuario([FromBody] RegisterInfo info)
+        [HttpPost("registrar_usuario")]
+        public IActionResult registrar_usuario([FromBody] RegisterInfo info)
         {
             _logger.Log(LogLevel.Information, "Iniciando registro_usuario...");
 
             try
             {
+                // criar usuario na base de dados
                 Usuario usr = new Usuario(info);
                 _usuarioRepository.Cadastrar(usr);
+
+                // criar segurado na base de dados
                 Cliente_Segurado seg = new Cliente_Segurado(info);
                 seg.Identificador_Usuario = usr.Id;
                 _seguradoRepository.Cadastrar(seg);
@@ -71,14 +74,6 @@ namespace apibronco.bronco.com.br.Controllers
         {
             var usuario = _usuarioRepository.ObterPorNomeUsuarioESenha(login.Email, login.Senha);
             Usuario usr;
-            //if (login.Email == "du.felipe.br@gmail.com" && login.Senha == "adm")
-            //{
-            //    //usr = new Usuario("1", "carlos");
-            //    //usr.Email = "du.felipe.br@gmail.com";
-            //    //usr.Senha = "adm";
-            //}
-            //else
-            //    usr = null;
 
             if (usuario == null)
                 return NotFound(new { mensagem = "Usuario e ou Senha invalidos" });

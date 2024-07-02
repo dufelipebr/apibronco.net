@@ -74,6 +74,9 @@ builder.Services.AddScoped<IGenericListRepository, MongodbGenericRepository>();
 builder.Services.AddScoped<ILogRepository, LogRepository>();
 builder.Services.AddScoped<IPagamentoRepository, PagamentoRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddScoped<ISeguradoRepository, Cliente_SeguradoRepository>();
+
 
 
 

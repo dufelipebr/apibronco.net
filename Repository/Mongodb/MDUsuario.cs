@@ -57,7 +57,14 @@ namespace apibronco.bronco.com.br.Repository.Mongodb
 
         public Usuario ObterPorNomeUsuarioESenha(string email, string senha)
         {
-            throw new NotImplementedException();
+            var client = new MongoClient(ConnectionString);
+            IMongoCollection<Usuario> _collection = client.GetDatabase(DbName).GetCollection<Usuario>("usuario");
+            var filter = Builders<Usuario>.Filter.Eq(e => e.Email, email);
+            var arrayFilter = Builders<BsonDocument>.Filter.Eq("Email", email)
+                                 & Builders<BsonDocument>.Filter.Eq("Senha", senha);
+
+            var allDocs = _collection.Find(filter).ToList();
+            return allDocs.FirstOrDefault<Usuario>();
         }
     }
 }
