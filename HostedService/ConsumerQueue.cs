@@ -1,4 +1,4 @@
-﻿using apibronco.bronco.com.br.DAO;
+﻿using apibronco.bronco.com.br.DTOs;
 using apibronco.bronco.com.br.Entity;
 using apibronco.bronco.com.br.Repository;
 using Microsoft.Azure.ServiceBus;

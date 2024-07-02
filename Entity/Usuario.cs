@@ -1,4 +1,4 @@
-﻿using apibronco.bronco.com.br.DAO;
+﻿using apibronco.bronco.com.br.DTOs;
 
 namespace apibronco.bronco.com.br.Entity
 {

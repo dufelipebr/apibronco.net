@@ -4,6 +4,7 @@ using MongoDB.Driver.Core.Configuration;
 using MongoDB.Driver;
 using MongoDB.Bson;
 using Amazon.Auth.AccessControlPolicy;
+using System.Text.Json;
 
 namespace apibronco.bronco.com.br.Repository.Mongodb
 {
@@ -59,11 +60,12 @@ namespace apibronco.bronco.com.br.Repository.Mongodb
         {
             var client = new MongoClient(ConnectionString);
             IMongoCollection<Usuario> _collection = client.GetDatabase(DbName).GetCollection<Usuario>("usuario");
-            var filter = Builders<Usuario>.Filter.Eq(e => e.Email, email);
-            var arrayFilter = Builders<BsonDocument>.Filter.Eq("Email", email)
-                                 & Builders<BsonDocument>.Filter.Eq("Senha", senha);
-
-            var allDocs = _collection.Find(filter).ToList();
+            //var filter = Builders<Usuario>.Filter.Eq(e => e.Email, email);
+            //var arrayFilter = Builders<BsonDocument>.Filter.Eq("Email", email)
+            //                     & Builders<BsonDocument>.Filter.Eq("Senha", senha);
+            string FilterJSON = "{'Email': '" + email + "','Senha':'" + senha+ "'}";
+            //string JsonString = JsonSerializer.Serialize(FilterJSON);
+            var allDocs = _collection.Find(FilterJSON);
             return allDocs.FirstOrDefault<Usuario>();
         }
     }

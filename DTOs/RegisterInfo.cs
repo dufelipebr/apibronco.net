@@ -1,6 +1,6 @@
 ﻿using apibronco.bronco.com.br.Entity;
 
-namespace apibronco.bronco.com.br.DAO
+namespace apibronco.bronco.com.br.DTOs
 {
     /// <summary>
     /// Informações trafegadas para registro de usuario 

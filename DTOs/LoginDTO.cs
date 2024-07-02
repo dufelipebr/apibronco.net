@@ -1,4 +1,4 @@
-﻿namespace apibronco.bronco.com.br.DAO
+﻿namespace apibronco.bronco.com.br.DTOs
 {
     public class LoginDTO
     {

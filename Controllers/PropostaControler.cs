@@ -6,7 +6,7 @@ using System.Diagnostics.Eventing.Reader;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using apibronco.bronco.com.br.Services;
-using apibronco.bronco.com.br.DAO;
+using apibronco.bronco.com.br.DTOs;
 
 namespace apibronco.bronco.com.br.Controllers
 {
