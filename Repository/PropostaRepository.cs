@@ -47,9 +47,15 @@ namespace apibronco.bronco.com.br.Repository
             return _repository.ObterTodos();
         }
 
+
         public Proposta ObterPorCodigoInterno(string id)
         {
             return _repository.ObterPorCodigoInterno(id);
+        }
+
+        public override bool IsUnique(Proposta entidade)
+        {
+            throw new NotImplementedException();
         }
     }
 }

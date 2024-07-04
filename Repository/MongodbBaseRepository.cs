@@ -28,5 +28,7 @@ namespace apibronco.bronco.com.br.Repository
         public abstract T ObterPorId(string  id);
         public abstract IList<T> ObterTodos();
         
+        public abstract bool IsUnique(T entidade);
+
     }
 }

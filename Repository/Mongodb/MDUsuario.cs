@@ -68,5 +68,10 @@ namespace apibronco.bronco.com.br.Repository.Mongodb
             var allDocs = _collection.Find(FilterJSON);
             return allDocs.FirstOrDefault<Usuario>();
         }
+
+        public override bool IsUnique(Usuario entidade)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

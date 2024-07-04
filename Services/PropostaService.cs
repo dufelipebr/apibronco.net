@@ -6,16 +6,16 @@ namespace apibronco.bronco.com.br.Services
     public class PropostaService
     {
         protected List<CondicaoPagto> _validCondicoes;
-        protected List<Grupo_Ramo> _validRamos;
+        protected List<GrupoRamo> _validRamos;
         protected List<Cobertura> _validCoberturas;
 
         public PropostaService()
         {
             _validCondicoes = new List<CondicaoPagto>();
-            _validRamos = new List<Grupo_Ramo>();
+            _validRamos = new List<GrupoRamo>();
             _validCoberturas = new List<Cobertura>();
         }
-        public PropostaService(List<CondicaoPagto> validCondicoes, List<Grupo_Ramo> validRamos, List<Cobertura> validCoberturas)
+        public PropostaService(List<CondicaoPagto> validCondicoes, List<GrupoRamo> validRamos, List<Cobertura> validCoberturas)
         {
             _validCondicoes = validCondicoes;
             _validRamos = validRamos;
@@ -106,27 +106,6 @@ namespace apibronco.bronco.com.br.Services
             return true;
         }
 
-        public static List<PropostaDTO> ConvertToDTO(IEnumerable<Proposta> listProposta)
-        {
-            List<PropostaDTO> returnList = new List<PropostaDTO>();
-            foreach (Proposta p in listProposta)
-            {
-                PropostaDTO dt = new PropostaDTO();
-                dt.Cobertura_Total = 0;
-                dt.Premio_Total = 0;
-                //dt.Premio_Total = p.Cobertura.Premio_Total;
-                dt.Data_Criacao_Proposta = p.Data_Emissao;
-                dt.Status_Proposta = p.Status_Proposta.ToString();
-                //dt.Pagamento = p.Pagamento;
-                if (p.Segurado != null)
-                    dt.Nome_Segurado = p.Segurado.Nome;
-
-                dt.Codigo_Interno = p.Codigo_Interno;
-                if (p.Cobertura_Seguro != null)
-                    dt.Codigo_Produto = p.Cobertura_Seguro.Codigo_Produto;
-                returnList.Add(dt);
-            }
-            return returnList;
-        }
+     
     }
 }

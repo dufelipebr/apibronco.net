@@ -60,7 +60,14 @@ namespace apibronco.bronco.com.br.Repository.Mongodb
             return allDocs.FirstOrDefault<LogInfo>();
         }
 
+ 
+
         public IList<LogInfo> ObterTodosByFilter(LogFilter filter)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool IsUnique(LogInfo entidade)
         {
             throw new NotImplementedException();
         }

@@ -38,6 +38,11 @@ namespace apibronco.bronco.com.br.Repository.Mongodb
             _collection.DeleteOne(filter);
         }
 
+        public override bool IsUnique(Cliente_Segurado entidade)
+        {
+            throw new NotImplementedException();
+        }
+
         public override Cliente_Segurado ObterPorId(string  id)
         {
             var client = new MongoClient(ConnectionString);
@@ -54,6 +59,7 @@ namespace apibronco.bronco.com.br.Repository.Mongodb
             var allDocs = _collection.Find(Builders<Cliente_Segurado>.Filter.Empty).ToList();
             return allDocs;
         }
+
 
         //public Cliente_Segurado ObterPorNomeCliente_SeguradoESenha(string email, string senha)
         //{

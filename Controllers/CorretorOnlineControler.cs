@@ -12,6 +12,7 @@ namespace apibronco.bronco.com.br.Controllers
     {
         private readonly ISeguradoRepository _seguradoRepository;
         private readonly IUsuarioRepository _usuarioRepository;
+        private readonly IProdutoRepository _produtoRepository;
         private readonly ITokenService _tokenService;
         private readonly ILogger<CorretorOnlineControler> _logger;
 
@@ -65,7 +66,7 @@ namespace apibronco.bronco.com.br.Controllers
         }
 
         /// <summary>
-        /// Permite realizar login do cliente segurado
+        /// Permite realizar login do cliente segurado no portal corretor online
         /// </summary>
         /// <param name="login"></param>
         /// <returns></returns>
@@ -87,6 +88,18 @@ namespace apibronco.bronco.com.br.Controllers
                 Usuario = usuario,
                 Token = token
             });
+        }
+
+        /// <summary>
+        /// lista de produtos disponiveis
+        /// </summary>
+        /// <returns>array de ProdutoInfo[]</returns>
+        [HttpPost("obter_produtos")]
+        public IActionResult obter_produtos()
+        {
+            var listaProdutos = _produtoRepository.ObterTodos();
+
+            return Ok(listaProdutos);
         }
     }
 }

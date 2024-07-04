@@ -38,6 +38,11 @@ namespace apibronco.bronco.com.br.Repository
             _repository.Deletar(entidade);
         }
 
+        public override bool IsUnique(LogInfo entidade)
+        {
+            throw new NotImplementedException();
+        }
+
         public override LogInfo ObterPorId(string id)
         {
             return _repository.ObterPorId(id);

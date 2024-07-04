@@ -15,6 +15,8 @@ namespace apibronco.bronco.com.br.Entity
 
         public string Id_Object_Type { get; set; }
 
+     //   public string MongoDb_Entity_Name { get; set; }
+
         //public bool IsValid() 
         //{
         //    if (Id == null)

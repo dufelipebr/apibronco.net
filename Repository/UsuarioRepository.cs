@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 //using apibronco.bronco.com.br.Repository.Azuredb;
 using apibronco.bronco.com.br.Repository.Mongodb;
+using System.Security.Cryptography.Xml;
 
 namespace apibronco.bronco.com.br.Repository
 {
@@ -54,6 +55,15 @@ namespace apibronco.bronco.com.br.Repository
 
             return _repository.ObterPorNomeUsuarioESenha(email, senha);
 
+        }
+
+        public override bool IsUnique(Usuario entidade)
+        {
+            IEnumerable<Usuario> listFind = ObterTodos().Where(a => a.Email == entidade.Email);
+            if (listFind.Count() > 0)
+                throw new ArgumentException("UNIQUEKEY: Email do usuario já existente.");
+            
+            return true;
         }
     }
 }

@@ -6,7 +6,7 @@ namespace apibronco.bronco.com.br.Interfaces
     public interface IGenericListRepository 
     {
         List<CondicaoPagto> ObterCondicaoPagtos();
-        List<Grupo_Ramo> ObterGrupoRamos();
+        List<GrupoRamo> ObterGrupoRamos();
         List<Cobertura> ObterCoberturas();
 
         public string TestConnection();

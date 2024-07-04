@@ -55,6 +55,17 @@ namespace apibronco.bronco.com.br.Repository.Mongodb
             return allDocs;
         }
 
+        public override bool IsUnique(Produto entidade)
+        {
+            IList<Produto> produtos = ObterTodos();
+            var findProd = produtos.Where(x => x.Identificador == entidade.Identificador).FirstOrDefault();
+            if (findProd != null)
+                return false;
+            else
+                return true;
+        }
+
+
         //public Pagamento ObterPorCodigoInterno(string codigo_interno)
         //{
         //    var client = new MongoClient(ConnectionString);

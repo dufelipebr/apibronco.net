@@ -1,11 +1,11 @@
-﻿namespace apibronco.bronco.com.br.Entity
+﻿namespace apibronco.bronco.com.br.DTOs.DTOIntegration
 {
-    public class Grupo_Ramo : Entidade
+    public class IntegrationGrupoRamoDTO
     {
         public string Codigo_Ramo { get; set; }
 
         public string Codigo_Ramo_SUSEP { get; set; }
-        
+
         public string Descricao_Ramo { get; set; } // 
 
         public string Codigo_Grupo { get; set; }

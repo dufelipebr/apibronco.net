@@ -34,12 +34,12 @@ namespace apibronco.bronco.com.br.Repository
             return allDocs;
         }
 
-        public List<Grupo_Ramo> ObterGrupoRamos()
+        public List<GrupoRamo> ObterGrupoRamos()
         {
             var client = new MongoClient(ConnectionString);
-            IMongoCollection<Grupo_Ramo> _collection = client.GetDatabase(DbName).GetCollection<Grupo_Ramo>("GrupoRamo");
+            IMongoCollection<GrupoRamo> _collection = client.GetDatabase(DbName).GetCollection<GrupoRamo>("GrupoRamo");
             //var filter = Builders<Proposta>.Filter.Eq(e => e.Id, id);
-            var allDocs = _collection.Find(Builders<Grupo_Ramo>.Filter.Empty).ToList();
+            var allDocs = _collection.Find(Builders<GrupoRamo>.Filter.Empty).ToList();
             return allDocs;
         }
 

@@ -2,7 +2,7 @@
 
 namespace apibronco.bronco.com.br.DTOs
 {
-    public class PropostaDTO
+    public class PropostaDTO    
     {
         //public StatusProposta StatusProposta { get; set; }
         public string Status_Proposta { get; set; }

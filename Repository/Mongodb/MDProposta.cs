@@ -12,6 +12,7 @@ namespace apibronco.bronco.com.br.Repository.Mongodb
         public MDProposta(IConfiguration configuration) : base(configuration) { 
             
         }
+
         public override void Alterar(Proposta entidade)
         {
             var client = new MongoClient(ConnectionString);
@@ -66,6 +67,11 @@ namespace apibronco.bronco.com.br.Repository.Mongodb
                 throw new Exception("codigo interno não encontrado");
 
             return allDocs.FirstOrDefault<Proposta>();
+        }
+
+        public override bool IsUnique(Proposta entidade)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -13,13 +13,13 @@ namespace apibronco.bronco.com.br.Controllers
         private readonly IUsuarioRepository _usuarioRepository;
         private readonly ISeguradoRepository _seguradoRepository;
         private readonly ITokenService _tokenService;
-        private readonly ILogger<PropostaControler> _logger;
+        private readonly ILogger<IntegrationControler> _logger;
 
         public LoginControler(
             IUsuarioRepository usuarioRepository,
             ISeguradoRepository seguradoRepository, 
             ITokenService tokenService, 
-            ILogger<PropostaControler> logger)
+            ILogger<IntegrationControler> logger)
         {
             _usuarioRepository = usuarioRepository;
             _seguradoRepository = seguradoRepository;

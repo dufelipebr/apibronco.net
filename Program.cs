@@ -72,10 +72,12 @@ builder.Services.AddScoped<IPropostaRepository, PropostaRepository>();
 builder.Services.AddScoped<IGenericListRepository, MongodbGenericRepository>();
 //builder.Services.AddScoped<IUsuarioRepository, AZUsuario>();
 builder.Services.AddScoped<ILogRepository, LogRepository>();
-builder.Services.AddScoped<IPagamentoRepository, PagamentoRepository>();
+//builder.Services.AddScoped<IPagamentoRepository, PagamentoRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<ISeguradoRepository, Cliente_SeguradoRepository>();
+builder.Services.AddScoped<IProdutoRepository, ProdutoRepository>();
+builder.Services.AddScoped<ICoberturaRepository, CoberturaRepository>();
 
 
 
