@@ -13,7 +13,7 @@ namespace apibronco.bronco.com.br.Repository
         private readonly ConnectionType _typeConnection;
         protected ConnectionType TypeConnection => _typeConnection;
 
-        public DapperRepository(IConfiguration configuration)
+        public DapperRepository(IConfiguration configuration)   
         {
             _connectionString = configuration.GetValue<string>("ConnectionStrings:AzureDB_ConnectionString");
             if (configuration.GetValue<string>("ConnectionType") == "Mongodb")
