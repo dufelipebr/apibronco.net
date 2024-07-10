@@ -18,7 +18,19 @@ namespace apibronco.bronco.com.br.DTOs.DTOIntegration
         public GrupoRamo GrupoRamo { get; set;  }
         public IntegrationCoberturaDTO[] Coberturas { get; set; }
         public IntegrationQuestionarioRiscoDTO[] Questionario_Riscos { get; set; }
+        #endregion
 
+        #region Corretor-Online 
+        public string[] includedFeatures
+        {
+            get {
+                List<string> values = new List<string>();   
+                foreach (IntegrationCoberturaDTO Cob in Coberturas) {
+                    values.Add(Cob.Descricao);
+                }
+                return values.ToArray();
+            }
+        }
         #endregion
     }
 }
