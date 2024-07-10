@@ -9,6 +9,11 @@ using apibronco.bronco.com.br.Services;
 using apibronco.bronco.com.br.DTOs.DTOIntegration;
 using apibronco.bronco.com.br.DTOs;
 using apibronco.bronco.com.br.Repository;
+using apibronco.bronco.com.br.Repository.Mongodb;
+using Microsoft.AspNetCore.Identity.Data;
+using Newtonsoft.Json.Converters;
+using Microsoft.Azure.Amqp.Framing;
+using MongoDB.Driver;
 
 namespace apibronco.bronco.com.br.Controllers
 {
@@ -16,7 +21,7 @@ namespace apibronco.bronco.com.br.Controllers
     [Route("integration_interface")]
     public class IntegrationControler : ControllerBase
     {
-        private IPagamentoRepository _pagamentoRepository;
+        //private IPagamentoRepository _pagamentoRepository;
         private IPropostaRepository _propostaRepository;
         private IProdutoRepository _produtoRepository;
         private ICoberturaRepository _coberturaRepository;
@@ -28,7 +33,7 @@ namespace apibronco.bronco.com.br.Controllers
         public IntegrationControler(  
             IPropostaRepository repository, 
             IGenericListRepository genericListRepository, 
-            IPagamentoRepository pagamentoRepository, 
+            //IPagamentoRepository pagamentoRepository, 
             IProdutoRepository produtoRepository, 
             ICoberturaRepository coberturaRepository,
             IGrupoRamoRepository grupoRamoRepository,
@@ -37,7 +42,7 @@ namespace apibronco.bronco.com.br.Controllers
             _propostaRepository = repository;
             _logger = logger;
             _genericRepository = genericListRepository;
-            _pagamentoRepository = pagamentoRepository;
+            //_pagamentoRepository = pagamentoRepository;
             _produtoRepository = produtoRepository;
             _coberturaRepository = coberturaRepository;
             _grupoRamoRepository = grupoRamoRepository;
@@ -186,7 +191,7 @@ namespace apibronco.bronco.com.br.Controllers
 
             try
             {
-                var p = _propostaRepository.ObterPorCodigoInterno(proposta_codigo_interno);
+                var p = _propostaRepository.ObterPorCodigo(proposta_codigo_interno);
                 if (p == null)
                     throw new Exception("proposta_codigo_interno não encontrado");
 
@@ -202,25 +207,6 @@ namespace apibronco.bronco.com.br.Controllers
         #endregion
 
         #region Produto
-        //[Authorize]
-        [HttpPost("criar_produto")]
-        public IActionResult criar_produto(Produto produto)
-        {
-            _logger.Log(LogLevel.Information, "Iniciando criar_produto...");
-
-            try
-            {
-                _produtoRepository.Cadastrar(produto);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"falha ao executar criar_produto() : {ex.Message}");
-                return BadRequest(ex.Message);
-            }
-            return Ok("ok");
-        }
-
-
         /// <summary>
         /// listar_produtos
         /// </summary>
@@ -234,8 +220,10 @@ namespace apibronco.bronco.com.br.Controllers
 
             try
             {
-                List<IntegrationProdutoDTO> list = IntegrationService.ConvertProdutoToIntegrationDTO(_produtoRepository.ObterTodos());
-                return Ok(list);
+                ProdutoService prodService = new ProdutoService(_produtoRepository, _grupoRamoRepository, _coberturaRepository);
+                return Ok(prodService.ListarProdutosDTO());
+                //List<IntegrationProdutoDTO> list = IntegrationService.ConvertProdutoToIntegrationDTO(_produtoRepository.ObterTodos());
+
             }
             catch (Exception ex)
             {
@@ -243,27 +231,84 @@ namespace apibronco.bronco.com.br.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        #endregion
 
-        #region Cobertura
         //[Authorize]
-        [HttpPost("criar_cobertura")]
-        public IActionResult criar_cobertura(IntegrationCoberturaDTO infoRequest)
+        [HttpPost("criar_produto")]
+        public IActionResult criar_produto(IntegrationProdutoDTO infoRequest)
         {
-            _logger.Log(LogLevel.Information, "Iniciando criar_cobertura...");
+            _logger.Log(LogLevel.Information, "Iniciando criar_produto...");
 
             try
             {
-                Cobertura cobertura = new Cobertura(infoRequest);
-                _coberturaRepository.Cadastrar(cobertura);
+                ProdutoService prodService = new ProdutoService(_produtoRepository, _grupoRamoRepository, _coberturaRepository);
+                prodService.SalvarProduto(infoRequest, true);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"falha ao executar criar_cobertura() : {ex.Message}");
+                _logger.LogError($"falha ao executar criar_produto() : {ex.Message}");
                 return BadRequest(ex.Message);
             }
             return Ok("ok");
         }
+
+        /// <summary>
+        /// Permite atualização de dados do Produto
+        /// </summary>
+        /// <returns></returns>
+        //[Authorize]
+        [HttpPut("editar_produto")]
+        public IActionResult editar_produto(IntegrationProdutoDTO infoRequest)
+        {
+            _logger.Log(LogLevel.Information, "Iniciando editar_Produto...");
+
+            try
+            {
+                ProdutoService prodService = new ProdutoService(_produtoRepository, _grupoRamoRepository, _coberturaRepository);
+                prodService.SalvarProduto(infoRequest, false);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"falha ao executar editar_produto : {ex.Message}");
+                return BadRequest();
+            }
+            return Ok("ok");
+        }
+
+        /// <summary>
+        /// Permite Cancelamento produto 
+        /// </summary>
+        /// <param name="codigo_produto">Codigo da produto</param>
+        /// <returns></returns>
+        //[Authorize]
+        [HttpDelete("cancelar_produto/{codigo_produto}")]
+        public IActionResult cancelar_produto(string codigo_produto)
+        {
+            _logger.Log(LogLevel.Information, "Iniciando cancelar_produto...");
+
+            try
+            {
+                var ent = _produtoRepository.ObterPorCodigo(codigo_produto);
+                //GrupoRamo gr = new GrupoRamo() { Codigo_Ramo = codigo_ramo};
+                if (ent == null)
+                    throw new Exception("codigo_produto não encontrado");
+
+                //_grupoRamoRepository.Deletar(grupoRamo);
+                ent.Identificador = "CANCELADO#" + ent.Identificador;
+                ent.Id_Status = 0;
+                ent.LastUpdateOn = DateTime.Now;
+
+                _produtoRepository.Alterar(ent);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"falha ao executar cancelar_produto(): {ex.Message}");
+                return BadRequest();
+            }
+            return Ok("ok");
+        }
+        #endregion
+
+        #region Cobertura
 
         /// <summary>
         /// listar coberturas
@@ -278,8 +323,8 @@ namespace apibronco.bronco.com.br.Controllers
 
             try
             {
-                List<IntegrationCoberturaDTO> list = IntegrationService.ConvertCoberturaToIntegrationDTO(_coberturaRepository.ObterTodos());
-                return Ok(list);
+                IntegrationService itService = new IntegrationService(_produtoRepository, _grupoRamoRepository, _coberturaRepository);
+                return Ok(itService.ListarCoberturaDTO());
             }
             catch (Exception ex)
             {
@@ -287,19 +332,30 @@ namespace apibronco.bronco.com.br.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        #endregion
 
-        #region GrupoRamo
+        /// <summary>
+        /// Criação de coberturas
+        /// </summary>
         //[Authorize]
-        [HttpPost("criar_grupo_ramo")]
-        public IActionResult criar_grupo_ramo(IntegrationGrupoRamoDTO infoRequest)
+        [HttpPost("criar_cobertura")]
+        public IActionResult criar_cobertura(IntegrationCoberturaDTO infoRequest)
         {
-            _logger.Log(LogLevel.Information, "Iniciando criar_grupo_ramo...");
+            _logger.Log(LogLevel.Information, "Iniciando criar_cobertura...");
 
             try
             {
-                GrupoRamo grupoRamo = new GrupoRamo(infoRequest);
-                _grupoRamoRepository.Cadastrar(grupoRamo);
+                Cobertura cobertura = new Cobertura(infoRequest);
+                cobertura.Id_Object_Type = "COBER";
+                cobertura.Id_Status = 1;
+                cobertura.CreatedOn = DateTime.Now;
+
+                var ramo = _grupoRamoRepository.ObterPorCodigo(infoRequest.Codigo_Grupo_Ramo);
+                if (ramo == null)
+                    throw new ArgumentException("criar_cobertura.Codigo_Grupo_Ramo não encontrado.");
+
+                cobertura.Id_Ramo = ramo.Id;
+
+                _coberturaRepository.Cadastrar(cobertura);
             }
             catch (Exception ex)
             {
@@ -308,6 +364,79 @@ namespace apibronco.bronco.com.br.Controllers
             }
             return Ok("ok");
         }
+
+        //[Authorize]
+        [HttpPut("editar_cobertura")]
+        public IActionResult editar_cobertura(IntegrationCoberturaDTO infoRequest)
+        {
+            _logger.Log(LogLevel.Information, "Iniciando editar_cobertura...");
+
+            try
+            {
+                Cobertura original = _coberturaRepository.ObterPorCodigo(infoRequest.Codigo_Identificador);
+
+                if (original == null)
+                    throw new Exception("Cobertura não encontrado original");
+
+                original.Comentario = infoRequest.Comentario;
+                //original.Codigo_Moeda = infoRequest.Codigo_Moeda;
+                original.Descricao = infoRequest.Descricao;
+                original.Codigo_Susep = infoRequest.Codigo_Susep;
+                original.Valor_Add_Fraq = infoRequest.Valor_Add_Fraq;
+                original.Valor_Comiss = infoRequest.Valor_Comiss;
+                original.Valor_Cosseg_Cedido = infoRequest.Valor_Cosseg_Cedido;
+                original.Valor_Custo_Emiss = infoRequest.Valor_Custo_Emiss;
+                original.Valor_DanoMaximo = infoRequest.Valor_DanoMaximo;
+                original.Valor_Is = infoRequest.Valor_Is;
+                original.Valor_LMI = infoRequest.Valor_LMI;
+                original.Valor_Premio = infoRequest.Valor_Premio;
+
+                _coberturaRepository.Alterar(original);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"falha ao executar AlterProposta : {ex.Message}");
+                return BadRequest();
+            }
+            return Ok("ok");
+        }
+
+        /// <summary>
+        /// Permite Cancelamento da cobertura 
+        /// </summary>
+        /// <param name="codigo_cobertura">Codigo da Cobertura</param>
+        /// <returns></returns>
+        //[Authorize]
+        [HttpDelete("cancelar_cobertura/{codigo_cobertura}")]
+        public IActionResult cancelar_cobertura(string codigo_cobertura)
+        {
+            _logger.Log(LogLevel.Information, "Iniciando cancelar_cobertura...");
+
+            try
+            {
+                var cob = _coberturaRepository.ObterPorCodigo(codigo_cobertura);
+                //GrupoRamo gr = new GrupoRamo() { Codigo_Ramo = codigo_ramo};
+                if (cob == null)
+                    throw new Exception("codigo_cobertura não encontrado");
+
+                //_grupoRamoRepository.Deletar(grupoRamo);
+                cob.Codigo_Identificador = "CANCELADO#" + cob.Codigo_Identificador;
+                cob.Id_Status = 0;
+                cob.LastUpdateOn = DateTime.Now;
+
+                _coberturaRepository.Alterar(cob);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"falha ao executar cancelar_cobertura(): {ex.Message}");
+                return BadRequest();
+            }
+            return Ok("ok");
+        }
+
+        #endregion
+
+        #region GrupoRamo
 
         /// <summary>
         /// listar ramos
@@ -322,8 +451,8 @@ namespace apibronco.bronco.com.br.Controllers
 
             try
             {
-                List<IntegrationGrupoRamoDTO> list = IntegrationService.ConvertGrupoRamoToIntegrationDTO(_grupoRamoRepository.ObterTodos());
-                return Ok(list);
+                IntegrationService itService = new IntegrationService(_produtoRepository, _grupoRamoRepository, _coberturaRepository);
+                return Ok(itService.ListarRamoDTO());
             }
             catch (Exception ex)
             {
@@ -331,6 +460,92 @@ namespace apibronco.bronco.com.br.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        //[Authorize]
+        [HttpPost("criar_ramo")]
+        public IActionResult criar_ramo(IntegrationGrupoRamoDTO infoRequest)
+        {
+            _logger.Log(LogLevel.Information, "Iniciando criar_grupo_ramo...");
+
+            try
+            {
+                GrupoRamo grupoRamo = new GrupoRamo(infoRequest);
+                grupoRamo.Id_Object_Type = "GRAMO";
+                grupoRamo.Id_Status = 1;// Status Ativo
+                grupoRamo.CreatedOn = DateTime.Now;
+
+                _grupoRamoRepository.Cadastrar(grupoRamo);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"falha ao executar criar_ramo() : {ex.Message}");
+                return BadRequest(ex.Message);
+            }
+            return Ok("ok");
+        }
+
+        /// <summary>
+        /// Permite atualização dos campos Descricao_Grupo, Descricao_Ramo.
+        /// </summary>
+        /// <param name="infoRequest"></param>
+        /// <returns></returns>
+        //[Authorize]
+        [HttpPut("editar_ramo")]
+        public IActionResult editar_ramo(IntegrationGrupoRamoDTO infoRequest)
+        {
+            _logger.Log(LogLevel.Information, "Iniciando editar_ramo...");
+
+            try
+            {
+                GrupoRamo original = _grupoRamoRepository.ObterPorCodigo(infoRequest.Codigo_Ramo);
+
+                if (original == null)
+                    throw new Exception("editar_ramo.Ramo não encontrado original");
+
+                original.LastUpdateOn = DateTime.Now;
+                original.Descricao_Grupo = infoRequest.Descricao_Grupo;
+                original.Descricao_Ramo = infoRequest.Descricao_Grupo;
+                //original. = infoRequest.Comentario;
+                if (original.IsValid())
+                    _grupoRamoRepository.Alterar(original);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"falha ao executar editar_ramo() : {ex.Message}");
+                return BadRequest(ex.Message);
+            }
+            return Ok("ok");
+        }
+
+        //[Authorize]
+        [HttpDelete("cancelar_ramo/{codigo_ramo}")]
+        public IActionResult cancelar_ramo(string codigo_ramo)
+        {
+            _logger.Log(LogLevel.Information, "Iniciando cancelar_ramo...");
+
+            try
+            {
+                var grupoRamo =  _grupoRamoRepository.ObterPorCodigo(codigo_ramo);
+                //GrupoRamo gr = new GrupoRamo() { Codigo_Ramo = codigo_ramo};
+                if (grupoRamo == null)
+                    throw new Exception("codigo_ramo não encontrado");
+
+                //_grupoRamoRepository.Deletar(grupoRamo);
+                grupoRamo.Codigo_Ramo = "CANCELADO#" + grupoRamo.Codigo_Ramo;
+                grupoRamo.Id_Status = 0;
+                grupoRamo.LastUpdateOn = DateTime.Now;
+
+                _grupoRamoRepository.Alterar(grupoRamo);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"falha ao executar cancelar_ramo(): {ex.Message}");
+                return BadRequest();
+            }
+            return Ok("ok");
+        }
+
+
         #endregion
 
     }

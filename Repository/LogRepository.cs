@@ -48,6 +48,11 @@ namespace apibronco.bronco.com.br.Repository
             return _repository.ObterPorId(id);
         }
 
+        public override LogInfo ObterPorCodigo(string codigo)
+        {
+            return _repository.ObterPorId(codigo);
+        }
+
         public override IList<LogInfo> ObterTodos()
         {
             return _repository.ObterTodos();

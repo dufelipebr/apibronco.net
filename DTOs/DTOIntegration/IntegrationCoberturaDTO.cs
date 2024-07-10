@@ -11,6 +11,9 @@ namespace apibronco.bronco.com.br.DTOs.DTOIntegration
         [Required]
         public string Descricao { get; set; }
 
+        [Required]
+        public string Comentario { get; set; }
+
         public decimal Valor_DanoMaximo { get; set; }
 
         public decimal Valor_Premio { get; set; }

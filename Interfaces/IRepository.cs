@@ -6,6 +6,8 @@ namespace apibronco.bronco.com.br.Interfaces
     {
         IList<T> ObterTodos();
         T ObterPorId(string id);
+        
+        T ObterPorCodigo(string codigo);
         void Cadastrar(T entidade);
         void Alterar(T entidade);
         void Deletar(T entidade);

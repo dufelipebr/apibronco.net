@@ -47,7 +47,7 @@ namespace apibronco.bronco.com.br.Repository.Mongodb
             var allDocs = _collection.Find(filter).ToList();
             return allDocs.FirstOrDefault<Proposta>();
         }
-
+       
         public override IList<Proposta> ObterTodos()
         {
             var client = new MongoClient(ConnectionString);
@@ -56,22 +56,35 @@ namespace apibronco.bronco.com.br.Repository.Mongodb
             return allDocs;
         }
 
-        public Proposta ObterPorCodigoInterno(string codigo_interno)
+        ////public Proposta ObterPorCodigo(string codigo_interno)
+        ////{
+        ////    var client = new MongoClient(ConnectionString);
+        ////    IMongoCollection<Proposta> _collection = client.GetDatabase(DbName).GetCollection<Proposta>("proposta");
+        ////    var filter = Builders<Proposta>.Filter.Eq(e => e.Codigo_Interno, codigo_interno);
+        ////    var allDocs = _collection.Find(filter).ToList();
+
+        ////    if (allDocs.Count == 0)
+        ////        throw new Exception("codigo interno não encontrado");
+
+        ////    return allDocs.FirstOrDefault<Proposta>();
+        ////}
+
+        public override bool IsUnique(Proposta entidade)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Proposta ObterPorCodigo(string codigo)
         {
             var client = new MongoClient(ConnectionString);
             IMongoCollection<Proposta> _collection = client.GetDatabase(DbName).GetCollection<Proposta>("proposta");
-            var filter = Builders<Proposta>.Filter.Eq(e => e.Codigo_Interno, codigo_interno);
+            var filter = Builders<Proposta>.Filter.Eq(e => e.Codigo_Interno, codigo);
             var allDocs = _collection.Find(filter).ToList();
 
             if (allDocs.Count == 0)
                 throw new Exception("codigo interno não encontrado");
 
             return allDocs.FirstOrDefault<Proposta>();
-        }
-
-        public override bool IsUnique(Proposta entidade)
-        {
-            throw new NotImplementedException();
         }
     }
 }

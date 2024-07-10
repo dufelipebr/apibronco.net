@@ -41,20 +41,28 @@ namespace apibronco.bronco.com.br.Repository.Mongodb
 
         public override bool IsUnique(Cobertura entidade)
         {
-            throw new NotImplementedException();
-            //IList<Cobertura> coberturas = ObterTodos();
-            //var findProd = coberturas.Where(x => x.Identificador == entidade.Identificador).FirstOrDefault();
-            //if (findProd != null)
-            //    return false;
-            //else
-            //    return true;
+            IList<Cobertura> list = ObterTodos();
+            var find = list.Where(x => x.Codigo_Identificador == entidade.Codigo_Identificador).FirstOrDefault();
+            if (find != null)
+                return false;
+            else
+                return true;
+        }
+
+        public override Cobertura ObterPorCodigo(string codigo)
+        {
+            var client = new MongoClient(ConnectionString);
+            IMongoCollection<Cobertura> _collection = client.GetDatabase(DbName).GetCollection<Cobertura>("cobertura");
+            var filter = Builders<Cobertura>.Filter.Eq(e => e.Codigo_Identificador, codigo) & Builders<Cobertura>.Filter.Eq(e => e.Id_Status, 1);
+            var allDocs = _collection.Find(filter).ToList();
+            return allDocs.FirstOrDefault<Cobertura>();
         }
 
         public override Cobertura ObterPorId(string  id)
         {
             var client = new MongoClient(ConnectionString);
             IMongoCollection<Cobertura> _collection = client.GetDatabase(DbName).GetCollection<Cobertura>("cobertura"); 
-            var filter = Builders<Cobertura>.Filter.Eq(e => e.Id, id);
+            var filter = Builders<Cobertura>.Filter.Eq(e => e.Id, id) & Builders<Cobertura>.Filter.Eq(e => e.Id_Status, 1);
             var allDocs = _collection.Find(filter).ToList();
             return allDocs.FirstOrDefault<Cobertura>();
         }
@@ -63,7 +71,7 @@ namespace apibronco.bronco.com.br.Repository.Mongodb
         {
             var client = new MongoClient(ConnectionString);
             IMongoCollection<Cobertura> _collection = client.GetDatabase(DbName).GetCollection<Cobertura>("cobertura");
-            var allDocs = _collection.Find(Builders<Cobertura>.Filter.Empty).ToList();
+            var allDocs = _collection.Find(Builders<Cobertura>.Filter.Eq(e => e.Id_Status, 1)).ToList();
             return allDocs;
         }
 
