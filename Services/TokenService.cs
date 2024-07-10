@@ -1,21 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.IdentityModel.Tokens;
 using apibronco.bronco.com.br.Entity;
-using apibronco.bronco.com.br.Services;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using apibronco.bronco.com.br.Interfaces;
 
-namespace apibronco.bronco.com.br
+namespace apibronco.bronco.com.br.Services
 {
     public class TokenService : ITokenService
     {
         private readonly IConfiguration _configuration;
-        
+
         public TokenService(IConfiguration cfg)
         {
             _configuration = cfg;
-                
+
         }
 
         public string GerarToken(Usuario usuario)
@@ -24,7 +24,7 @@ namespace apibronco.bronco.com.br
             var key = Encoding.ASCII.GetBytes(_configuration.GetValue<string>("Secret"));
             var tokenDS = new SecurityTokenDescriptor
             {
-                Subject = new System.Security.Claims.ClaimsIdentity(
+                Subject = new ClaimsIdentity(
                     new Claim[]
                     {
                         new Claim(ClaimTypes.Name, usuario.Email),

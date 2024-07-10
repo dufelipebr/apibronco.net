@@ -6,6 +6,8 @@ namespace apibronco.bronco.com.br.Entity
 {
     public class GrupoRamo : Entidade, IEntidade
     {
+        #region construtors
+        public GrupoRamo() { }
         public GrupoRamo(IntegrationGrupoRamoDTO dto) { 
             this.Codigo_Grupo = dto.Codigo_Grupo;
             this.Codigo_Grupo_SUSEP = dto.Codigo_Grupo_SUSEP;
@@ -14,6 +16,7 @@ namespace apibronco.bronco.com.br.Entity
             this.Codigo_Ramo_SUSEP = dto.Codigo_Ramo_SUSEP;
             this.Descricao_Ramo = dto.Descricao_Ramo;
         }
+        #endregion
 
         public string Codigo_Ramo { get; set; }
 

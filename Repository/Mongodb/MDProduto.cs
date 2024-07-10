@@ -53,7 +53,16 @@ namespace apibronco.bronco.com.br.Repository.Mongodb
         {
             var client = new MongoClient(ConnectionString);
             IMongoCollection<Produto> _collection = client.GetDatabase(DbName).GetCollection<Produto>("produto"); 
-            var filter = Builders<Produto>.Filter.Eq(e => e.Id, id);
+            var filter = Builders<Produto>.Filter.Eq(e => e.Id, id) & Builders<Produto>.Filter.Eq(e => e.Id_Status, 1);
+            var allDocs = _collection.Find(filter).ToList();
+            return allDocs.FirstOrDefault<Produto>();
+        }
+
+        public override Produto ObterPorCodigo(string codigo)
+        {
+            var client = new MongoClient(ConnectionString);
+            IMongoCollection<Produto> _collection = client.GetDatabase(DbName).GetCollection<Produto>("produto");
+            var filter = Builders<Produto>.Filter.Eq(e => e.Identificador, codigo) & Builders<Produto>.Filter.Eq(e => e.Id_Status, 1);
             var allDocs = _collection.Find(filter).ToList();
             return allDocs.FirstOrDefault<Produto>();
         }
@@ -62,7 +71,7 @@ namespace apibronco.bronco.com.br.Repository.Mongodb
         {
             var client = new MongoClient(ConnectionString);
             IMongoCollection<Produto> _collection = client.GetDatabase(DbName).GetCollection<Produto>("produto");
-            var allDocs = _collection.Find(Builders<Produto>.Filter.Empty).ToList();
+            var allDocs = _collection.Find(Builders<Produto>.Filter.Eq(e => e.Id_Status, 1)).ToList();
             return allDocs;
         }
 

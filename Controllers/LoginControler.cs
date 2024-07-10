@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using apibronco.bronco.com.br.Entity;
 using apibronco.bronco.com.br.Interfaces;
-using apibronco.bronco.com.br.Services;
 using apibronco.bronco.com.br.DTOs;
 namespace apibronco.bronco.com.br.Controllers
 {

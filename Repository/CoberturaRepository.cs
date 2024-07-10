@@ -8,18 +8,18 @@ using apibronco.bronco.com.br.Repository.Mongodb;
 
 namespace apibronco.bronco.com.br.Repository
 {
-    public class CoberturaRepository : MongodbBaseRepository<Cobertura>, ICoberturaRepository
+    public class CoberturaRepository : DapperRepository<Cobertura>, ICoberturaRepository
     {
         IConfiguration _config;
         IRepository<Cobertura> _repository;
         public CoberturaRepository(IConfiguration configuration) : base(configuration)
         {
-            //_config = configuration;
-            //if (TypeConnection == ConnectionType.Mongodb)
+            _config = configuration;
+            if (TypeConnection == ConnectionType.Mongodb)
                 _repository = new MDCobertura(_config);
-            //else
-            //    throw new NotImplementedException();
-            //// _repository = new AZCobertura(_config);
+            else
+                throw new NotImplementedException();
+            //_repository = new AZProposta(_config);
         }
 
         public override void Alterar(Cobertura entidade)
@@ -52,6 +52,12 @@ namespace apibronco.bronco.com.br.Repository
         {
             return _repository.ObterPorId(id);
         }
+
+        public override Cobertura ObterPorCodigo(string codigo)
+        {
+            return _repository.ObterPorCodigo(codigo);
+        }
+
 
         public override IList<Cobertura> ObterTodos()
         {

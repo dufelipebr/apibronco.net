@@ -8,18 +8,18 @@ using apibronco.bronco.com.br.Repository.Mongodb;
 
 namespace apibronco.bronco.com.br.Repository
 {
-    public class GrupoRamoRepository : MongodbBaseRepository<GrupoRamo>, IGrupoRamoRepository
+    public class GrupoRamoRepository : DapperRepository<GrupoRamo>, IGrupoRamoRepository
     {
         IConfiguration _config;
         IGrupoRamoRepository _repository;
         public GrupoRamoRepository(IConfiguration configuration) : base(configuration)
         {
-            //_config = configuration;
-            //if (TypeConnection == ConnectionType.Mongodb)
+            _config = configuration;
+            if (TypeConnection == ConnectionType.Mongodb)
                 _repository = new MDGrupoRamo(_config);
-            //else
-            //    throw new NotImplementedException();
-            //// _repository = new AZGrupoRamo(_config);
+            else
+                throw new NotImplementedException();
+            //_repository = new AZProposta(_config);
         }
 
         public override void Alterar(GrupoRamo entidade)
@@ -36,16 +36,15 @@ namespace apibronco.bronco.com.br.Repository
 
         public override void Deletar(GrupoRamo entidade)
         {
-            _repository.Deletar(entidade);
+            if (entidade.IsValid())
+                _repository.Deletar(entidade);
         }
 
         public override bool IsUnique(GrupoRamo entidade)
         {
-            IEnumerable<GrupoRamo> listFind = ObterTodos().Where(a => a.Codigo_Ramo == entidade.Codigo_Ramo &&
-                a.Codigo_Grupo == entidade.Codigo_Grupo
-            );
+            IEnumerable<GrupoRamo> listFind = ObterTodos().Where(a => a.Codigo_Ramo == entidade.Codigo_Ramo);
             if (listFind.Count() > 0)
-                throw new ArgumentException("UNIQUEKEY: Codigo_Ramo e Codigo_Grupo já existente.");
+                throw new ArgumentException("UNIQUEKEY: Codigo_Ramo já existente.");
 
             return true;
         }
@@ -53,6 +52,11 @@ namespace apibronco.bronco.com.br.Repository
         public override GrupoRamo ObterPorId(string id)
         {
             return _repository.ObterPorId(id);
+        }
+
+        public override GrupoRamo ObterPorCodigo(string codigo)
+        {
+            return _repository.ObterPorCodigo(codigo);
         }
 
         public override IList<GrupoRamo> ObterTodos()
