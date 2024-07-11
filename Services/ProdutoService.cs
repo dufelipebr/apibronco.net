@@ -90,27 +90,29 @@ namespace apibronco.bronco.com.br.Services
 
             foreach (Produto produto in list)
             {
-                List<IntegrationCoberturaDTO> coberturas = new List<IntegrationCoberturaDTO>();
+                //List<IntegrationCoberturaDTO> coberturas = new List<IntegrationCoberturaDTO>();
+                List<string> includedFeatures = new List<string>();
                 foreach (string cobertura_Id in produto.Cobertura_Ids)
                 {
                     Cobertura cob = _coberturaRepository.ObterPorId(cobertura_Id);
 
                     if(cob != null)
-                    { 
-                        coberturas.Add(new IntegrationCoberturaDTO()
-                        {
-                            Codigo_Identificador = cob.Codigo_Identificador,
-                            Codigo_Moeda = cob.Codigo_Moeda,
-                            Codigo_Susep = cob.Codigo_Susep,
-                            Valor_LMI = cob.Valor_LMI,
-                            Valor_IOF = cob.Valor_IOF,
-                            Valor_Custo_Emiss = cob.Valor_Custo_Emiss,
-                            Valor_Is = cob.Valor_Is,
-                            Valor_Comiss = cob.Valor_Comiss,
-                            Valor_Premio = cob.Valor_Premio,
-                            Descricao = cob.Descricao,
-                            Comentario = cob.Comentario
-                        });
+                    {
+                        includedFeatures.Add(cob.Descricao);
+                        //coberturas.Add(new IntegrationCoberturaDTO()
+                        //{
+                        //    Codigo_Identificador = cob.Codigo_Identificador,
+                        //    Codigo_Moeda = cob.Codigo_Moeda,
+                        //    Codigo_Susep = cob.Codigo_Susep,
+                        //    Valor_LMI = cob.Valor_LMI,
+                        //    Valor_IOF = cob.Valor_IOF,
+                        //    Valor_Custo_Emiss = cob.Valor_Custo_Emiss,
+                        //    Valor_Is = cob.Valor_Is,
+                        //    Valor_Comiss = cob.Valor_Comiss,
+                        //    Valor_Premio = cob.Valor_Premio,
+                        //    Descricao = cob.Descricao,
+                        //    Comentario = cob.Comentario
+                        //});
                     }
 
                 }
@@ -132,14 +134,14 @@ namespace apibronco.bronco.com.br.Services
                 produtosDTO.Add(new IntegrationReturnProdutoDTO
                 {
                     Identificador = produto.Identificador,
-                    GrupoRamo = grupoRamo,
+                    //GrupoRamo = grupoRamo,
                     //Identicador_Ramo = produto.Identicador_Ramo,
                     Produto_Descricao = produto.Produto_Descricao,
                     Comentario_Produto = produto.Comentario_Produto,
                     Comentario_Contratacao = produto.Comentario_Contratacao,
                     Preco_Produto = produto.Preco_Produto,
                     Moeda = produto.Moeda,
-                    Coberturas = coberturas.ToArray(),
+                    IncludedFeatures = includedFeatures.ToArray(),
                     Questionario_Riscos = riscos.ToArray()
                 });
                 

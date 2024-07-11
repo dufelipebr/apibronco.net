@@ -5,6 +5,8 @@ namespace apibronco.bronco.com.br.DTOs.DTOIntegration
 {
     public class IntegrationReturnProdutoDTO
     {
+        private string[] _includedFeatures;
+
         #region properties
         public string Identificador { get; set; }
         //public Grupo_Ramo Ramo { get; set; }
@@ -15,22 +17,24 @@ namespace apibronco.bronco.com.br.DTOs.DTOIntegration
         public decimal Preco_Produto { get; set; }
         public string Moeda { get; set; }
 
-        public GrupoRamo GrupoRamo { get; set;  }
-        public IntegrationCoberturaDTO[] Coberturas { get; set; }
+        //public GrupoRamo GrupoRamo { get; set;  }
+        //protected IntegrationCoberturaDTO[] Coberturas { get; set; }
         public IntegrationQuestionarioRiscoDTO[] Questionario_Riscos { get; set; }
-        #endregion
-
-        #region Corretor-Online 
-        public string[] includedFeatures
-        {
-            get {
-                List<string> values = new List<string>();   
-                foreach (IntegrationCoberturaDTO Cob in Coberturas) {
-                    values.Add(Cob.Descricao);
-                }
-                return values.ToArray();
-            }
-        }
+        
+        public string[] IncludedFeatures { get; set;  }
+        //{
+        //    get {
+        //        if (_includedFeatures == null)
+        //        { 
+        //            List<string> values = new List<string>();   
+        //            foreach (IntegrationCoberturaDTO Cob in Coberturas) {
+        //                values.Add(Cob.Descricao);
+        //            }
+        //            _includedFeatures =  values.ToArray();
+        //        }
+        //        return _includedFeatures;
+        //    }
+        //}
         #endregion
     }
 }
