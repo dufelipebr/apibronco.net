@@ -11,10 +11,12 @@ namespace apibronco.bronco.com.br.DTOs.DTOIntegration
         public string Identicador_Ramo { get; set; }
         public string Produto_Descricao { get; set; }
         public string Comentario_Contratacao { get; set; }
+
+        public string Comentario_Produto { get; set; }
         public decimal Preco_Produto { get; set; }
         public string Moeda { get; set; }
-        public Cobertura[] Coberturas { get; set; }
-        public QuestionarioRisco[] Questionario_Riscos { get; set; }
+        public string[] Coberturas_IDs { get; set; } // codigos das coberturas atreladas ao Produto
+        public IntegrationQuestionarioRiscoDTO[] Questionario_Riscos { get; set; }
 
         #endregion
     }

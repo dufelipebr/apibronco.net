@@ -47,10 +47,14 @@ namespace apibronco.bronco.com.br.Repository
             return _repository.ObterTodos();
         }
 
-
-        public Proposta ObterPorCodigoInterno(string id)
+        /// <summary>
+        /// Date filter mongodb:  {"Data_Log":{$gte:ISODate('2024-07-07'),$lt:ISODate('2024-07-09')}} 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public override Proposta ObterPorCodigo(string codigo)
         {
-            return _repository.ObterPorCodigoInterno(id);
+            return _repository.ObterPorCodigo(codigo);
         }
 
         public override bool IsUnique(Proposta entidade)

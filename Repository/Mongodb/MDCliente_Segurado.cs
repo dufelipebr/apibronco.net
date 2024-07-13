@@ -7,7 +7,7 @@ using Amazon.Auth.AccessControlPolicy;
 
 namespace apibronco.bronco.com.br.Repository.Mongodb
 {
-    public class MDCliente_Segurado : Repository.MongodbBaseRepository<Cliente_Segurado>, ISeguradoRepository
+    public class MDCliente_Segurado : MongodbBaseRepository<Cliente_Segurado>, ISeguradoRepository
     {
         public MDCliente_Segurado(IConfiguration configuration) : base(configuration) { 
             
@@ -48,6 +48,15 @@ namespace apibronco.bronco.com.br.Repository.Mongodb
             var client = new MongoClient(ConnectionString);
             IMongoCollection<Cliente_Segurado> _collection = client.GetDatabase(DbName).GetCollection<Cliente_Segurado>("Cliente_Segurado"); 
             var filter = Builders<Cliente_Segurado>.Filter.Eq(e => e.Id, id);
+            var allDocs = _collection.Find(filter).ToList();
+            return allDocs.FirstOrDefault<Cliente_Segurado>();
+        }
+
+        public override Cliente_Segurado ObterPorCodigo(string codigo)
+        {
+            var client = new MongoClient(ConnectionString);
+            IMongoCollection<Cliente_Segurado> _collection = client.GetDatabase(DbName).GetCollection<Cliente_Segurado>("Cliente_Segurado");
+            var filter = Builders<Cliente_Segurado>.Filter.Eq(e => e.Email, codigo);
             var allDocs = _collection.Find(filter).ToList();
             return allDocs.FirstOrDefault<Cliente_Segurado>();
         }

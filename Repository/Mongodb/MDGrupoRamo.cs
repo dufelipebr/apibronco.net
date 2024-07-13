@@ -47,8 +47,19 @@ namespace apibronco.bronco.com.br.Repository.Mongodb
         {
             var client = new MongoClient(ConnectionString);
             IMongoCollection<GrupoRamo> _collection = client.GetDatabase(DbName).GetCollection<GrupoRamo>("GrupoRamo"); 
-            var filter = Builders<GrupoRamo>.Filter.Eq(e => e.Id, id);
+            var filter = Builders<GrupoRamo>.Filter.Eq(e => e.Id, id) & Builders<GrupoRamo>.Filter.Eq(e => e.Id_Status, 1);
             var allDocs = _collection.Find(filter).ToList();
+
+            return allDocs.FirstOrDefault<GrupoRamo>();
+        }
+
+        public override GrupoRamo ObterPorCodigo(string codigo)
+        {
+            var client = new MongoClient(ConnectionString);
+            IMongoCollection<GrupoRamo> _collection = client.GetDatabase(DbName).GetCollection<GrupoRamo>("GrupoRamo");
+            var filter = Builders<GrupoRamo>.Filter.Eq(e => e.Codigo_Ramo, codigo) & Builders<GrupoRamo>.Filter.Eq(e => e.Id_Status, 1);
+            var allDocs = _collection.Find(filter).ToList();
+
             return allDocs.FirstOrDefault<GrupoRamo>();
         }
 
@@ -56,7 +67,12 @@ namespace apibronco.bronco.com.br.Repository.Mongodb
         {
             var client = new MongoClient(ConnectionString);
             IMongoCollection<GrupoRamo> _collection = client.GetDatabase(DbName).GetCollection<GrupoRamo>("GrupoRamo");
-            var allDocs = _collection.Find(Builders<GrupoRamo>.Filter.Empty).ToList();
+
+            string FilterJSON = "{'Id_Status':1}";
+            //string JsonString = JsonSerializer.Serialize(FilterJSON);
+            var allDocs = _collection.Find(FilterJSON).ToList(); ;
+
+            //var allDocs = _collection.Find(Builders<GrupoRamo>.Filter.Empty).ToList();
             return allDocs;
         }
 
