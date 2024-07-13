@@ -1,5 +1,7 @@
 ﻿using apibronco.bronco.com.br.DTOs;
 using apibronco.bronco.com.br.Entity;
+using apibronco.bronco.com.br.Interfaces;
+using apibronco.bronco.com.br.Repository;
 using Microsoft.AspNetCore.Identity.Data;
 
 namespace apibronco.bronco.com.br.Services
@@ -9,20 +11,16 @@ namespace apibronco.bronco.com.br.Services
         //protected List<CondicaoPagto> _validCondicoes;
         //protected List<GrupoRamo> _validRamos;
         //protected List<Cobertura> _validCoberturas;
-        private List<Usuario> _usersList;
-        private List<Produto> _produtoList;
-
-        public PropostaService()
+        IProdutoRepository _produtoRepository;
+        IGrupoRamoRepository _grupoRamoRepository;
+        ICoberturaRepository _coberturaRepository;
+        IUsuarioRepository _usuarioRepository;
+        public PropostaService(IProdutoRepository produtoRepository, IGrupoRamoRepository grupoRamoRepository, ICoberturaRepository coberturaRepository, IUsuarioRepository usuarioRepository)
         {
-            //_validCondicoes = new List<CondicaoPagto>();
-            //_validRamos = new List<GrupoRamo>();
-            //_validCoberturas = new List<Cobertura>();
-        }
-        public PropostaService(List<CondicaoPagto> validCondicoes, List<GrupoRamo> validRamos, List<Cobertura> validCoberturas)
-        {
-            //_validCondicoes = validCondicoes;
-            //_validRamos = validRamos;
-            //_validCoberturas = validCoberturas;
+            _produtoRepository = produtoRepository;
+            _grupoRamoRepository = grupoRamoRepository;
+            _coberturaRepository = coberturaRepository;
+            _usuarioRepository = usuarioRepository;
         }
 
         public Proposta CriarProposta(IntegrationPropostaDTO propostaDTO) 
@@ -34,7 +32,7 @@ namespace apibronco.bronco.com.br.Services
             p.LastUpdateOn = DateTime.MinValue;
             p.Id_Object_Type = "PROPO";
             p.Id_Status = (int) EnStatusProposta.Aberto; // Active
-            p.Moeda = "BRL";
+          
 
             p.Data_Emissao = DateTime.Now;
             p.Data_Fim_Vigencia = DateTime.Now.AddYears(1);
@@ -43,15 +41,17 @@ namespace apibronco.bronco.com.br.Services
             p.Id_Corretor = "0";
             p.Id_Ramo_Principal = "0";
 
-            try { 
-                p.Id_Segurado = _usersList.Where(e => e.Email == propostaDTO.Codigo_Segurado).FirstOrDefault().Id;
+            try {
+                p.Id_Segurado = _usuarioRepository.ObterPorCodigo(propostaDTO.Codigo_Segurado).Id;
+                //p.Id_Segurado = _usersList.Where(e => e.Email == propostaDTO.Codigo_Segurado).FirstOrDefault().Id;
             }
             catch{
                 throw new ArgumentException($"Problema para obter o Codigo_Segurado {propostaDTO.Codigo_Segurado}");
             }
 
-            try { 
-                p.Id_Produto = _produtoList.Where(e => e.Identificador == propostaDTO.Codigo_Produto).FirstOrDefault().Id;
+            try {
+                p.Id_Produto = _produtoRepository.ObterPorCodigo(propostaDTO.Codigo_Produto).Id;
+                //p.Id_Produto = _produtoList.Where(e => e.Identificador == propostaDTO.Codigo_Produto).FirstOrDefault().Id;
             }
             catch{
                 throw new ArgumentException($"Problema para obter o Codigo_Produto {propostaDTO.Codigo_Produto}");
@@ -69,6 +69,7 @@ namespace apibronco.bronco.com.br.Services
                 ValidarProposta(p);
 
             return p;
+            //_propostaRepository.Cadastrar(p);
         }
 
         

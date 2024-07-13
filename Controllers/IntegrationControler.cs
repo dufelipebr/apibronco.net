@@ -27,6 +27,7 @@ namespace apibronco.bronco.com.br.Controllers
         private ICoberturaRepository _coberturaRepository;
         private IGenericListRepository _genericRepository;
         private IGrupoRamoRepository _grupoRamoRepository;
+        private IUsuarioRepository _usuarioRepository;
         private readonly ILogger<IntegrationControler> _logger;
 
 
@@ -37,6 +38,7 @@ namespace apibronco.bronco.com.br.Controllers
             IProdutoRepository produtoRepository, 
             ICoberturaRepository coberturaRepository,
             IGrupoRamoRepository grupoRamoRepository,
+            IUsuarioRepository usuarioRepository,
             ILogger<IntegrationControler> logger)
         {
             _propostaRepository = repository;
@@ -46,7 +48,9 @@ namespace apibronco.bronco.com.br.Controllers
             _produtoRepository = produtoRepository;
             _coberturaRepository = coberturaRepository;
             _grupoRamoRepository = grupoRamoRepository;
+            _usuarioRepository = usuarioRepository;
         }
+
 
         /// <summary>
         /// checkar ws funcionando
@@ -135,7 +139,7 @@ namespace apibronco.bronco.com.br.Controllers
                 //List<GrupoRamo> ramos = _genericRepository.ObterGrupoRamos();
                 //List<Cobertura> coberturas = _genericRepository.ObterCoberturas();
                 //prop.
-                PropostaService service = new PropostaService();
+                PropostaService service = new PropostaService(_produtoRepository, _grupoRamoRepository, _coberturaRepository, _usuarioRepository);
                 Proposta p = service.CriarProposta(propostaDTO);
                 _propostaRepository.Cadastrar(p);
 
@@ -161,18 +165,18 @@ namespace apibronco.bronco.com.br.Controllers
             try
             {
                 //   Proposta p = new Proposta(prop);
-                List<CondicaoPagto> condicoes = _genericRepository.ObterCondicaoPagtos();
-                List<GrupoRamo> ramos = _genericRepository.ObterGrupoRamos();
-                List<Cobertura> coberturas = _genericRepository.ObterCoberturas();
+                //List<CondicaoPagto> condicoes = _genericRepository.ObterCondicaoPagtos();
+                //List<GrupoRamo> ramos = _genericRepository.ObterGrupoRamos();
+                //List<Cobertura> coberturas = _genericRepository.ObterCoberturas();
 
-                Proposta original = _propostaRepository.ObterPorId(prop.Id);
+                //Proposta original = _propostaRepository.ObterPorId(prop.Id);
 
-                if (original == null)
-                    throw new Exception("Não encontrado original");
+                //if (original == null)
+                //    throw new Exception("Não encontrado original");
 
-                PropostaService service = new PropostaService(condicoes, ramos, coberturas);
-                service.AlterarProposta(prop, original);
-                _propostaRepository.Alterar(prop);
+                //PropostaService service = new PropostaService(condicoes, ramos, coberturas);
+                //service.AlterarProposta(prop, original);
+                //_propostaRepository.Alterar(prop);
             }
             catch (Exception ex)
             {
