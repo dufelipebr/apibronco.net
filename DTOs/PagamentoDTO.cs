@@ -3,6 +3,23 @@ using System.ComponentModel.DataAnnotations;
 
 namespace apibronco.bronco.com.br.DTOs
 {
+    public class PagamentoDTO
+    {
+        public Cartao? Cartao_Info { get; set; }
+
+
+        public string Codigo_Condicao_Pagto { get; set; } // Boleto - B, D - Debito, C- Credito, P - PIX
+
+        public decimal Valor_Pagamento { get; set; }
+
+
+        public int Parcelas { get; set; }
+
+
+        public string Reference { get; set; }
+        //public Parcelas_Pagamento[] Parcelas { get; set; }
+    }
+
     public class Cartao
     {
         [Required]
@@ -28,23 +45,4 @@ namespace apibronco.bronco.com.br.DTOs
         }
     }
 
-    public class PagamentoDTO
-    {
-        [Required]
-        public string Codigo_Condicao_Pagto { get; set; } // Boleto - B, D - Debito, C- Credito, P - PIX
-        [Required]
-        public decimal Valor_Pagamento { get; set; }
-
-        [Required]
-        public int Parcelas { get; set; }
-
-
-        public Cartao Cartao_Info { get; set; }
-
-        [Required]
-        public string Reference { get; set; }
-
-        
-        //public Parcelas_Pagamento[] Parcelas { get; set; }
-    }
 }
