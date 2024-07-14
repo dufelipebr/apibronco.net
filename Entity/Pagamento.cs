@@ -23,6 +23,12 @@ namespace apibronco.bronco.com.br.Entity
             //this.Id = String.Empty;
             this.CreatedOn = DateTime.Now;
 
+            if (pagDTO.Cartao_Info != null)
+            {
+                this.Cartao_Info = new Cartao(pagDTO.Cartao_Info);
+            }
+
+
             List<Parcelas_Pagamento> parcelas = new List<Parcelas_Pagamento>();
             int parcelaNumero = 1;
             for (int i =1; i <= Parcelas; i++)
@@ -55,6 +61,8 @@ namespace apibronco.bronco.com.br.Entity
         public DateTime Data_Vencimento { get; set; }
 
         public DateTime Data_Processamento { get; set; }
+
+        public Cartao? Cartao_Info { get; set; }
 
         public string Descricao
         {
@@ -99,14 +107,14 @@ namespace apibronco.bronco.com.br.Entity
     }
 
 
-    public class Cartao : Pagamento
+    public class Cartao 
     {
-        public Cartao(PagamentoDTO pagDTO) : base(pagDTO)
+        public Cartao(DTOs.Cartao pagDTO) 
         {
-            this.CC_CVV = pagDTO.Cartao_Info.CC_CVV;
-            this.CC_Expira = pagDTO.Cartao_Info.CC_Expira;
-            this.CC_Nome = pagDTO.Cartao_Info.CC_Nome;
-            this.CC_Numero = pagDTO.Cartao_Info.CC_Numero;
+            this.CC_CVV = pagDTO.CC_CVV;
+            this.CC_Expira = pagDTO.CC_Expira;
+            this.CC_Nome = pagDTO.CC_Nome;
+            this.CC_Numero = pagDTO.CC_Numero;
 
             IsValid();
         }
@@ -120,7 +128,7 @@ namespace apibronco.bronco.com.br.Entity
         [Required]
         public string CC_Expira { get; set; }
 
-        public bool isValid()
+        public bool IsValid()
         {
             AssertionConcern.AssertArgumentLength(CC_Nome, 40, "CC_Nome must have max 40 digits");
             AssertionConcern.AssertArgumentLength(CC_Numero, 16, "CC_Numero must have max 16 digits");
