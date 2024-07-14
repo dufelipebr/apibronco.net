@@ -48,6 +48,15 @@ namespace apibronco.bronco.com.br.Repository.Mongodb
             return allDocs.FirstOrDefault<Usuario>();
         }
 
+        public override Usuario ObterPorCodigo(string email)
+        {
+            var client = new MongoClient(ConnectionString);
+            IMongoCollection<Usuario> _collection = client.GetDatabase(DbName).GetCollection<Usuario>("usuario");
+            var filter = Builders<Usuario>.Filter.Eq(e => e.Email, email);
+            var allDocs = _collection.Find(filter).ToList();
+            return allDocs.FirstOrDefault<Usuario>();
+        }
+
         public override IList<Usuario> ObterTodos()
         {
             var client = new MongoClient(ConnectionString);
@@ -71,7 +80,12 @@ namespace apibronco.bronco.com.br.Repository.Mongodb
 
         public override bool IsUnique(Usuario entidade)
         {
-            throw new NotImplementedException();
+            IList<Usuario> usuarios = ObterTodos();
+            var findProd = usuarios.Where(x => x.Email == entidade.Email).FirstOrDefault();
+            if (findProd != null)
+                return false;
+            else
+                return true;
         }
     }
 }

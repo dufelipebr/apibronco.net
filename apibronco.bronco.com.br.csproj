@@ -24,8 +24,6 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <Compile Remove="Repository\Mongodb\MDGenericEntity.cs" />
-	  <Compile Remove="Repository\Mongodb\MDPagamento.cs" />
-	  <Compile Remove="Repository\PagamentoRepository.cs" />
 	</ItemGroup>
 
   <ItemGroup>

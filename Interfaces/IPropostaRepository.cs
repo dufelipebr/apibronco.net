@@ -5,6 +5,6 @@ namespace apibronco.bronco.com.br.Interfaces
 {
     public interface IPropostaRepository : IRepository<Proposta>
     {
-        public Proposta ObterPorCodigoInterno(string id);
+        //public Proposta ObterPorCodigoInterno(string id);
     }
 }

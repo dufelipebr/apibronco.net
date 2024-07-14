@@ -47,6 +47,12 @@ namespace apibronco.bronco.com.br.Repository
             return _repository.ObterPorId(id);
         }
 
+        public override Cliente_Segurado ObterPorCodigo(string codigo)
+        {
+            return _repository.ObterPorCodigo(codigo);
+        }
+
+
         public override IList<Cliente_Segurado> ObterTodos()
         {
             return _repository.ObterTodos();

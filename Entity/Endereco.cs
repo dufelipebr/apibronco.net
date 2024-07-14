@@ -2,7 +2,7 @@
 
 namespace apibronco.bronco.com.br.Entity
 {
-    public class Endereco : Entidade, IEntidade
+    public class Endereco 
     {
         public Endereco(string logradouro, string numero, string complemento, string bairro, string uF, string pais, string cEP)
         {

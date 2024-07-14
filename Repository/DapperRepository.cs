@@ -25,6 +25,7 @@ namespace apibronco.bronco.com.br.Repository
         public abstract void Cadastrar(T entidade);
         public abstract void Deletar(T entidade);
         public abstract T ObterPorId(string id);
+        public abstract T ObterPorCodigo(string id);
         public abstract bool IsUnique(T entidade);
         public abstract IList<T> ObterTodos();
         

@@ -1,35 +1,30 @@
 ﻿using apibronco.bronco.com.br.DTOs;
 using apibronco.bronco.com.br.DTOs.DTOIntegration;
 using apibronco.bronco.com.br.Entity;
+using apibronco.bronco.com.br.Interfaces;
+using apibronco.bronco.com.br.Repository;
 
 namespace apibronco.bronco.com.br.Services
 {
     public class IntegrationService
     {
-        public static List<IntegrationProdutoDTO> ConvertProdutoToIntegrationDTO(IEnumerable<Produto> list)
+        IProdutoRepository _produtoRepository;
+        IGrupoRamoRepository _grupoRamoRepository;
+        ICoberturaRepository _coberturaRepository;
+        public IntegrationService(
+            IProdutoRepository produtoRepository, 
+            IGrupoRamoRepository grupoRamoRepository, 
+            ICoberturaRepository coberturaRepository)
         {
-            List<IntegrationProdutoDTO> integrationProdutoDTOs = new List<IntegrationProdutoDTO>();
-            foreach (Produto produto in list)
-            {
-                integrationProdutoDTOs.Add(new IntegrationProdutoDTO
-                {
-                    Identificador = produto.Identificador,
-                    Identicador_Ramo = produto.Identicador_Ramo,
-                    Produto_Descricao = produto.Produto_Descricao,
-                    Comentario_Contratacao = produto.Comentario_Contratacao,
-                    Preco_Produto = produto.Preco_Produto,
-                    Moeda = produto.Moeda,
-                    Coberturas = produto.Coberturas,
-                    Questionario_Riscos = produto.Questionario_Riscos
-                });
-            }
-            return integrationProdutoDTOs;
+            _produtoRepository = produtoRepository;
+            _grupoRamoRepository = grupoRamoRepository;
+            _coberturaRepository = coberturaRepository;
         }
 
 
-
-        public static List<IntegrationGrupoRamoDTO> ConvertGrupoRamoToIntegrationDTO(IEnumerable<GrupoRamo> list)
+        public  List<IntegrationGrupoRamoDTO> ListarRamoDTO()
         {
+            var list = _grupoRamoRepository.ObterTodos();
             List<IntegrationGrupoRamoDTO> integrationGrupoRamoDTOs = new List<IntegrationGrupoRamoDTO>();
             foreach (GrupoRamo item in list)
             {
@@ -46,14 +41,19 @@ namespace apibronco.bronco.com.br.Services
             return integrationGrupoRamoDTOs;
         }
 
-        public static List<IntegrationCoberturaDTO> ConvertCoberturaToIntegrationDTO(IEnumerable<Cobertura> list)
+        public  List<IntegrationCoberturaDTO> ListarCoberturaDTO()
         {
+            var list = _coberturaRepository.ObterTodos();
+            var listRamo = _grupoRamoRepository.ObterTodos();
+            
             List<IntegrationCoberturaDTO> integrationCoberturaDTOs = new List<IntegrationCoberturaDTO>();
             foreach (Cobertura item in list)
             {
+                var ramo = listRamo.Where(x => x.Id == item.Id_Ramo).FirstOrDefault();
+
                 integrationCoberturaDTOs.Add(new IntegrationCoberturaDTO
                 {
-                    Codigo_Grupo_Ramo = item.Codigo_Grupo_Ramo,
+                    //Codigo_Grupo_Ramo = item.Codigo_Grupo_Ramo,
                     Codigo_Identificador = item.Codigo_Identificador,
                     Codigo_Moeda = item.Codigo_Moeda,
                     Codigo_Susep = item.Codigo_Susep,
@@ -63,8 +63,15 @@ namespace apibronco.bronco.com.br.Services
                     Valor_Premio = item.Valor_Premio,
                     Valor_Is = item.Valor_Is,
                     Valor_Add_Fraq = item.Valor_Add_Fraq,
-                }); ;
+                    Valor_IOF = item.Valor_IOF,
+                    Valor_Comiss = item.Valor_Comiss,
+                    Valor_Cosseg_Cedido = item.Valor_Cosseg_Cedido,
+                    Valor_Custo_Emiss = item.Valor_Custo_Emiss,
+                    Comentario = item.Comentario,
+                    Codigo_Grupo_Ramo = ramo.Codigo_Ramo
+                });
             }
+            
             return integrationCoberturaDTOs;
         }
     }

@@ -5,11 +5,11 @@ using Microsoft.OpenApi.Models;
 using apibronco.bronco.com.br;
 using apibronco.bronco.com.br.Interfaces;
 using apibronco.bronco.com.br.Repository;
-using apibronco.bronco.com.br.Services;
 using System.Data.SqlClient;
 using System.Reflection;
 using System.Text;
 using apibronco.bronco.com.br.HostedService;
+using apibronco.bronco.com.br.Services;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
@@ -68,16 +68,20 @@ builder.Services.AddSwaggerGen(c =>
     c.IncludeXmlComments(xmlPath);
 });
 
-builder.Services.AddScoped<IPropostaRepository, PropostaRepository>();
-builder.Services.AddScoped<IGenericListRepository, MongodbGenericRepository>();
+
+
 //builder.Services.AddScoped<IUsuarioRepository, AZUsuario>();
 builder.Services.AddScoped<ILogRepository, LogRepository>();
 //builder.Services.AddScoped<IPagamentoRepository, PagamentoRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IGenericListRepository, MongodbGenericRepository>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddScoped<IPropostaRepository, PropostaRepository>();
 builder.Services.AddScoped<ISeguradoRepository, Cliente_SeguradoRepository>();
 builder.Services.AddScoped<IProdutoRepository, ProdutoRepository>();
 builder.Services.AddScoped<ICoberturaRepository, CoberturaRepository>();
+builder.Services.AddScoped<IGrupoRamoRepository, GrupoRamoRepository>();
+builder.Services.AddScoped<IPagamentoRepository, PagamentoRepository>();
 
 
 
