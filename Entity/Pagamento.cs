@@ -47,7 +47,7 @@ namespace apibronco.bronco.com.br.Entity
 
         public decimal Total_Pagto { get; set; }
 
-        public DateTime Data_Pagamento { get; set; }
+        public DateTime? Data_Pagamento { get; set; }
 
         public DateTime Data_Vencimento { get; set; }
 
@@ -70,7 +70,9 @@ namespace apibronco.bronco.com.br.Entity
             AssertionConcern.AssertArgumentNotEmpty(Codigo_Condicao_Pagto,  "Codigo_Condicao_Pagto must not be empty");
             AssertionConcern.AssertArgumentNotEmpty(Reference, "Reference must not be empty");
             AssertionConcern.AssertArgumentRange((double) Total_Pagto, 0.1, 10000000, "Total_Pagto must not be greater than 0");
-            AssertionConcern.AssertArgumentTrue(Data_Pagamento > new DateTime(2024, 1, 1), "Data_Pagamento must be greater than 2024-01-01");
+            if (Data_Pagamento != null)
+                AssertionConcern.AssertArgumentTrue(Data_Pagamento > new DateTime(2024, 1, 1), "Data_Pagamento must be greater than 2024-01-01");
+
             AssertionConcern.AssertArgumentTrue(Data_Processamento > new DateTime(2024, 1, 1), "Data_Processamento must be greater than 2024-01-01");
             AssertionConcern.AssertArgumentTrue(Data_Vencimento > new DateTime(2024, 1, 1), "Data_Vencimento must be greater than 2024-01-01");
         }
