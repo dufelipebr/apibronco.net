@@ -18,6 +18,8 @@ namespace apibronco.bronco.com.br.DTOs
 
         public string Reference { get; set; }
         //public Parcelas_Pagamento[] Parcelas { get; set; }
+
+
     }
 
     public class Cartao

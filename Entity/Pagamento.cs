@@ -1,8 +1,11 @@
 ﻿using apibronco.bronco.com.br.DTOs;
+using Microsoft.AspNetCore.Components.Web;
+using Microsoft.IdentityModel.Tokens;
 using System.ComponentModel.DataAnnotations;
 
 namespace apibronco.bronco.com.br.Entity
 {
+    public enum Pagamento_Status{ Aberto =1, Pago = 2, Cancelado = 3 }
     public class Pagamento : Entidade
     {
         public Pagamento(PagamentoDTO pagDTO)
@@ -14,6 +17,29 @@ namespace apibronco.bronco.com.br.Entity
             //this.Data_Pagamento = DateTime.Now;
             this.Data_Vencimento = DateTime.Now.AddDays(3);
             this.Data_Processamento = DateTime.Now;
+            this.Id_Object_Type = "PAGMT";
+            this.Id_Status = (int) Pagamento_Status.Aberto;
+            this.Id = String.Empty;
+            this.CreatedOn = DateTime.Now;
+
+            List<Parcelas_Pagamento> parcelas = new List<Parcelas_Pagamento>();
+            int parcelaNumero = 1;
+            for (int i =1; i < Parcelas; i++)
+            {
+                Parcelas_Pagamento p = new Parcelas_Pagamento() {
+                    Pagamento = this,
+                    Parcela = parcelaNumero, 
+                    Valor_Pagamento = this.Total_Pagto/Parcelas,
+                    Data_Pagamento = null,
+                    Data_Processamento = DateTime.Now,
+                    Data_Vencimento = this.Data_Vencimento.AddMonths(i),
+                    Reference = this.Reference
+                };
+                parcelas.Add(p);
+            }
+            this.Parcelas_Pagamento = parcelas.ToArray();
+            
+            IsValid();
         }
         public string Codigo_Condicao_Pagto { get; set; }
 
@@ -39,6 +65,15 @@ namespace apibronco.bronco.com.br.Entity
 
         public int Parcelas { get; set; }
 
+        public void IsValid()
+        {
+            AssertionConcern.AssertArgumentNotEmpty(Codigo_Condicao_Pagto,  "Codigo_Condicao_Pagto must not be empty");
+            AssertionConcern.AssertArgumentNotEmpty(Reference, "Reference must not be empty");
+            AssertionConcern.AssertArgumentRange((double) Total_Pagto, 0.1, 10000000, "Total_Pagto must not be greater than 0");
+            AssertionConcern.AssertArgumentTrue(Data_Pagamento > new DateTime(2024, 1, 1), "Data_Pagamento must be greater than 2024-01-01");
+            AssertionConcern.AssertArgumentTrue(Data_Processamento > new DateTime(2024, 1, 1), "Data_Processamento must be greater than 2024-01-01");
+            AssertionConcern.AssertArgumentTrue(Data_Vencimento > new DateTime(2024, 1, 1), "Data_Vencimento must be greater than 2024-01-01");
+        }
     }
 
     public class Parcelas_Pagamento
@@ -62,7 +97,12 @@ namespace apibronco.bronco.com.br.Entity
     {
         public Cartao(PagamentoDTO pagDTO) : base(pagDTO)
         {
-            
+            this.CC_CVV = pagDTO.Cartao_Info.CC_CVV;
+            this.CC_Expira = pagDTO.Cartao_Info.CC_Expira;
+            this.CC_Nome = pagDTO.Cartao_Info.CC_Nome;
+            this.CC_Numero = pagDTO.Cartao_Info.CC_Numero;
+
+            IsValid();
         }
 
         [Required]

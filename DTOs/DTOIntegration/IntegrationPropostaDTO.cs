@@ -104,10 +104,7 @@ namespace apibronco.bronco.com.br.DTOs
 
 
 
-        public bool IsValid()
-        {
-            return true;
-        }
+       
 
     }
 }
