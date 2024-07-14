@@ -81,6 +81,7 @@ builder.Services.AddScoped<ISeguradoRepository, Cliente_SeguradoRepository>();
 builder.Services.AddScoped<IProdutoRepository, ProdutoRepository>();
 builder.Services.AddScoped<ICoberturaRepository, CoberturaRepository>();
 builder.Services.AddScoped<IGrupoRamoRepository, GrupoRamoRepository>();
+builder.Services.AddScoped<IPagamentoRepository, PagamentoRepository>();
 
 
 

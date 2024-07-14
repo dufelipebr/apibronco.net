@@ -23,12 +23,12 @@ namespace apibronco.bronco.com.br.Entity
             this.Moeda = "BRL";
 
 
-            if (dto.Condicao_Pagto.Codigo_Condicao_Pagto == "D" || dto.Condicao_Pagto.Codigo_Condicao_Pagto == "C")
-                this.Pagamento = new Cartao(dto.Condicao_Pagto);
-            else
-                this.Pagamento = new Pagamento(dto.Condicao_Pagto);
+            //if (dto.Condicao_Pagto.Codigo_Condicao_Pagto == "D" || dto.Condicao_Pagto.Codigo_Condicao_Pagto == "C")
+            //    this.Pagamento = new Cartao(dto.Condicao_Pagto);
+            //else
+            //    this.Pagamento = new Pagamento(dto.Condicao_Pagto);
 
-            this.Pagamento.Reference = $"Proposta:{Codigo_Interno}";
+            //this.Pagamento.Reference = $"Proposta:{Codigo_Interno}";
 
             IsValid();
         }
@@ -52,7 +52,7 @@ namespace apibronco.bronco.com.br.Entity
 
         //public Cliente_Segurado Segurado { get; set; }
 
-        public Pagamento Pagamento { get; set; }
+        //public Pagamento Pagamento { get; set; }
 
         public DateTime Data_Emissao { get; set; }
 
@@ -93,8 +93,8 @@ namespace apibronco.bronco.com.br.Entity
             //if (this.Cobertura_Seguro == null)
             //    throw new ArgumentException("Cobertura da proposta não pode ser nula");
 
-            if (this.Pagamento == null)
-                throw new ArgumentException("Proposta.Pagamento da proposta não pode ser nula");
+            //if (this.Pagamento == null)
+            //    throw new ArgumentException("Proposta.Pagamento da proposta não pode ser nula");
 
 
 

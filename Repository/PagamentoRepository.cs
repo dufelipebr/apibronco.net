@@ -37,6 +37,16 @@ namespace apibronco.bronco.com.br.Repository
             _repository.Deletar(entidade);
         }
 
+        public override bool IsUnique(Pagamento entidade)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Pagamento ObterPorCodigo(string id)
+        {
+            throw new NotImplementedException();
+        }
+
         public override Pagamento ObterPorId(string id)
         {
             return _repository.ObterPorId(id);

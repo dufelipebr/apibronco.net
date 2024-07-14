@@ -122,8 +122,8 @@ namespace apibronco.bronco.com.br.Services
             //if (p.Codigo_Empresa == null)
             //    throw new Exception("Codigo da Empresa deve ser informado");
 
-            if (p.Pagamento == null)
-                throw new Exception("Forma de pagamento deve ser informado");
+            //if (p.Pagamento == null)
+            //    throw new Exception("Forma de pagamento deve ser informado");
 
             //if (p.Cobertura_Seguro == null)
             //    throw new Exception("Precisa informar Cobertura");

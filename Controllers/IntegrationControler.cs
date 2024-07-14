@@ -28,6 +28,7 @@ namespace apibronco.bronco.com.br.Controllers
         private IGenericListRepository _genericRepository;
         private IGrupoRamoRepository _grupoRamoRepository;
         private IUsuarioRepository _usuarioRepository;
+        private IPagamentoRepository _pagamentoRepository;
         private readonly ILogger<IntegrationControler> _logger;
 
 
@@ -39,6 +40,7 @@ namespace apibronco.bronco.com.br.Controllers
             ICoberturaRepository coberturaRepository,
             IGrupoRamoRepository grupoRamoRepository,
             IUsuarioRepository usuarioRepository,
+            IPagamentoRepository pagamentoRepository,
             ILogger<IntegrationControler> logger)
         {
             _propostaRepository = repository;
@@ -49,6 +51,8 @@ namespace apibronco.bronco.com.br.Controllers
             _coberturaRepository = coberturaRepository;
             _grupoRamoRepository = grupoRamoRepository;
             _usuarioRepository = usuarioRepository;
+            _pagamentoRepository = pagamentoRepository;
+            
         }
 
 
@@ -143,10 +147,11 @@ namespace apibronco.bronco.com.br.Controllers
                 Proposta p = service.CriarProposta(propostaDTO);
                 _propostaRepository.Cadastrar(p);
 
-                //Pagamento pag = new Pagamento(pagamentoDTO);
-                //pag.Reference = prop.Codigo_Interno;
-                //_pagamentoRepository.Cadastrar(pag);
+                
 
+                Pagamento pag = new Pagamento(propostaDTO.Condicao_Pagto);
+                pag.Reference = p.Codigo_Interno;
+                _pagamentoRepository.Cadastrar(pag);
             }
             catch (Exception ex)
             {

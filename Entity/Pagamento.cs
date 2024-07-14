@@ -10,6 +10,7 @@ namespace apibronco.bronco.com.br.Entity
     {
         public Pagamento(PagamentoDTO pagDTO)
         {
+            this.Codigo_Identificador = $"Proposta:{pagDTO.Reference}";
             this.Codigo_Condicao_Pagto = pagDTO.Codigo_Condicao_Pagto;
             this.Parcelas = pagDTO.Parcelas;
             this.Total_Pagto = pagDTO.Valor_Pagamento;
@@ -19,15 +20,15 @@ namespace apibronco.bronco.com.br.Entity
             this.Data_Processamento = DateTime.Now;
             this.Id_Object_Type = "PAGMT";
             this.Id_Status = (int) Pagamento_Status.Aberto;
-            this.Id = String.Empty;
+            //this.Id = String.Empty;
             this.CreatedOn = DateTime.Now;
 
             List<Parcelas_Pagamento> parcelas = new List<Parcelas_Pagamento>();
             int parcelaNumero = 1;
-            for (int i =1; i < Parcelas; i++)
+            for (int i =1; i <= Parcelas; i++)
             {
                 Parcelas_Pagamento p = new Parcelas_Pagamento() {
-                    Pagamento = this,
+                    //Pagamento = this,
                     Parcela = parcelaNumero, 
                     Valor_Pagamento = this.Total_Pagto/Parcelas,
                     Data_Pagamento = null,
@@ -42,6 +43,8 @@ namespace apibronco.bronco.com.br.Entity
             IsValid();
         }
         public string Codigo_Condicao_Pagto { get; set; }
+
+        public string Codigo_Identificador { get; set; }
 
         public string Reference { get; set; }
 
@@ -67,6 +70,7 @@ namespace apibronco.bronco.com.br.Entity
 
         public void IsValid()
         {
+            AssertionConcern.AssertArgumentNotEmpty(Codigo_Identificador, "Codigo_Identificador must not be empty");
             AssertionConcern.AssertArgumentNotEmpty(Codigo_Condicao_Pagto,  "Codigo_Condicao_Pagto must not be empty");
             AssertionConcern.AssertArgumentNotEmpty(Reference, "Reference must not be empty");
             AssertionConcern.AssertArgumentRange((double) Total_Pagto, 0.1, 10000000, "Total_Pagto must not be greater than 0");
@@ -80,7 +84,7 @@ namespace apibronco.bronco.com.br.Entity
 
     public class Parcelas_Pagamento
     {
-        public Pagamento Pagamento { get; set; }
+        //public string Pagamento { get; set; }
         public int Parcela { get; set; }
         public decimal Valor_Pagamento { get; set; }
         

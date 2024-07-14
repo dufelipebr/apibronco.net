@@ -55,15 +55,26 @@ namespace apibronco.bronco.com.br.Repository.Mongodb
             return allDocs;
         }
 
-        public override bool IsUnique(Produto entidade)
+        public override bool IsUnique(Pagamento entidade)
         {
-            IList<Produto> produtos = ObterTodos();
-            var findProd = produtos.Where(x => x.Identificador == entidade.Identificador).FirstOrDefault();
+            IList<Pagamento> pagamentos = ObterTodos();
+            var findProd = pagamentos.Where(x => x.Codigo_Identificador == entidade.Codigo_Identificador).FirstOrDefault();
             if (findProd != null)
                 return false;
             else
                 return true;
         }
+
+        public override Pagamento ObterPorCodigo(string codigo)
+        {
+            var client = new MongoClient(ConnectionString);
+            IMongoCollection<Pagamento> _collection = client.GetDatabase(DbName).GetCollection<Pagamento>("Pagamento");
+            var filter = Builders<Pagamento>.Filter.Eq(e => e.Codigo_Identificador, codigo);
+            var allDocs = _collection.Find(filter).ToList();
+            return allDocs.FirstOrDefault<Pagamento>();
+        }
+
+        
 
 
         //public Pagamento ObterPorCodigoInterno(string codigo_interno)
