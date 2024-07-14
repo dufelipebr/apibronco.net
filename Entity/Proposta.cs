@@ -20,6 +20,7 @@ namespace apibronco.bronco.com.br.Entity
             this.Endereco_Faturamento = dto.Endereco_Faturamento;
             this.Premio_Total = dto.Premio_Total;
             this.Cobertura_Total = dto.Cobertura_Total;
+            this.Questionario_Risco = dto.Questionario_Risco;
             this.Moeda = "BRL";
 
 
@@ -71,6 +72,8 @@ namespace apibronco.bronco.com.br.Entity
         public string UF_Risco_Principal { get; set; } // provalmente vai seguir endereço do segurado
 
         public Endereco Endereco_Faturamento { get; set; }
+
+        public QuestionarioRisco[] Questionario_Risco { get; set; }
 
 
         public bool IsValid()

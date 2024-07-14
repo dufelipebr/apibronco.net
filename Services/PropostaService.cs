@@ -144,6 +144,13 @@ namespace apibronco.bronco.com.br.Services
             return true;
         }
 
+        //public List<IntegrationReturnPropostaDTO> ConvertToDTO(List<Proposta> propostas)
+        //{
+          
+
+        //}
+    
+
      
     }
 }

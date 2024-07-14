@@ -5,20 +5,21 @@ namespace apibronco.bronco.com.br.Entity
 {
     public class QuestionarioRisco 
     {
-        public QuestionarioRisco(IntegrationQuestionarioRiscoDTO dto) 
-        {
-            this.Numero = dto.Numero;
-            this.Identificador = dto.Identificador;
-            this.Pergunta = dto.Pergunta;
-            this.Tipo_Pergunta = dto.Tipo_Pergunta;
+        //public QuestionarioRisco(IntegrationQuestionarioRiscoDTO dto) 
+        //{
+        //    this.Numero = dto.Numero;
+        //    this.Identificador = dto.Identificador;
+        //    this.Pergunta = dto.Pergunta;
+        //    this.Tipo_Pergunta = dto.Tipo_Pergunta;
             
-            IsValid();
-        }
+        //    IsValid();
+        //}
         public int Numero { get; set; } 
         public string Identificador { get; set; }
         public string Pergunta { get; set; }
         public string Tipo_Pergunta { get; set; }
-        //public string Resposta { get; set; }
+        
+        public string Resposta { get; set; }
 
         public bool IsValid()
         {

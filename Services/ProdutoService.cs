@@ -43,12 +43,12 @@ namespace apibronco.bronco.com.br.Services
                 produto.Moeda = infoRequest.Moeda;
                 produto.Preco_Produto = infoRequest.Preco_Produto;
 
-                List<QuestionarioRisco> riscos = new List<QuestionarioRisco>();
-                foreach (IntegrationQuestionarioRiscoDTO qr in infoRequest.Questionario_Riscos)
-                {
-                    riscos.Add(new QuestionarioRisco(qr));
-                }
-                produto.Questionario_Riscos = riscos.ToArray();
+                //List<QuestionarioRisco> riscos = new List<QuestionarioRisco>();
+                //foreach (IntegrationQuestionarioRiscoDTO qr in infoRequest.Questionario_Riscos)
+                //{
+                //    riscos.Add(new QuestionarioRisco(qr));
+                //}
+                produto.Questionario_Riscos = infoRequest.Questionario_Riscos;
             }
 
             //checagem do Ramo
@@ -117,17 +117,17 @@ namespace apibronco.bronco.com.br.Services
 
                 }
 
-                List<IntegrationQuestionarioRiscoDTO> riscos = new List<IntegrationQuestionarioRiscoDTO>();
-                foreach (QuestionarioRisco info in produto.Questionario_Riscos)
-                {
-                    riscos.Add(new IntegrationQuestionarioRiscoDTO()
-                    {
-                        Numero = info.Numero,
-                        Identificador = info.Identificador,
-                        Pergunta = info.Pergunta,
-                        Tipo_Pergunta = info.Tipo_Pergunta,
-                    });
-                }
+                //List<IntegrationQuestionarioRiscoDTO> riscos = new List<IntegrationQuestionarioRiscoDTO>();
+                //foreach (QuestionarioRisco info in produto.Questionario_Riscos)
+                //{
+                //    riscos.Add(new IntegrationQuestionarioRiscoDTO()
+                //    {
+                //        Numero = info.Numero,
+                //        Identificador = info.Identificador,
+                //        Pergunta = info.Pergunta,
+                //        Tipo_Pergunta = info.Tipo_Pergunta,
+                //    });
+                //}
 
                 var grupoRamo = _grupoRamoRepository.ObterPorId(produto.Ramo_Id);
 
@@ -142,7 +142,7 @@ namespace apibronco.bronco.com.br.Services
                     Preco_Produto = produto.Preco_Produto,
                     Moeda = produto.Moeda,
                     IncludedFeatures = includedFeatures.ToArray(),
-                    Questionario_Riscos = riscos.ToArray()
+                    Questionario_Riscos = produto.Questionario_Riscos
                 });
                 
             }

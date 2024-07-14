@@ -16,7 +16,7 @@ namespace apibronco.bronco.com.br.DTOs.DTOIntegration
         public decimal Preco_Produto { get; set; }
         public string Moeda { get; set; }
         public string[] Coberturas_IDs { get; set; } // codigos das coberturas atreladas ao Produto
-        public IntegrationQuestionarioRiscoDTO[] Questionario_Riscos { get; set; }
+        public QuestionarioRisco[] Questionario_Riscos { get; set; }
 
         #endregion
     }

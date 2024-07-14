@@ -17,15 +17,16 @@ namespace apibronco.bronco.com.br.DTOs
         [Required]
         public string Codigo_Corretor { get; set; }
         //public Pagamento Pagamento { get; set; }
-
-        //public Cliente_Segurado Segurado { get; set; }
+        
         [Required]
         public string Codigo_Segurado { get; set; }
+        
+        //public Cliente_Segurado Segurado { get; set; }
 
         [Required]
         public PagamentoDTO Condicao_Pagto { get; set; }
 
-        public IntegrationQuestionarioRiscoDTO[] Questionario_Risco { get; set; }
+        public QuestionarioRisco[] Questionario_Risco { get; set; }
 
         [Required]
         public decimal? Cobertura_Total { get; set; }

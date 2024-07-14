@@ -112,23 +112,45 @@ namespace apibronco.bronco.com.br.Controllers
         /// <response code="403">N�o autorizado</response>
         /// <response code="501">Erro</response>
         //[Authorize]
-        [HttpGet("listar_propostas/{id_usuario}")]
+        [HttpGet("listar_propostas")]
         //public IEnumerable<Proposta> GetPropostaList()
-        public IActionResult GetPropostaList(int id_usuario)
+        public IActionResult listar_propostas()
         {
              //_logger.Log(LogLevel.Information, "Iniciando GetPropostaList...");
-            List<IntegrationPropostaDTO> returnList = new List<IntegrationPropostaDTO>();
-            //try
-            //{
-            //    IEnumerable<Produto> list = _propostaRepository.ObterTodos();
-            //    returnList = ProdutoService.ConvertToDTO(list);
-            //}
-            //catch (Exception ex)
-            //{
-            //    _logger.LogError($"falha ao executar _propostaRepository.GetPropostaList() : {ex.Message}");
-            //    return BadRequest(ex.Message);
-            //}
-            return Ok(returnList);
+            
+            try
+            {
+                IEnumerable<Proposta> list = _propostaRepository.ObterTodos();
+                //List<IntegrationPropostaDTO>  returnList = PropostaService.ConvertToDTO(list);
+                //return Ok(returnList.ToArray());
+
+                List<IntegrationReturnPropostaDTO> dto = new List<IntegrationReturnPropostaDTO>();
+                foreach (var item in list)
+                {
+                    Usuario segurado =  _usuarioRepository.ObterPorId(item.Id_Segurado);
+                    //Pagamento pagamento = _pagamentoRepository.ObterPorCodigo(item.Codigo_Interno);
+                    dto.Add(new IntegrationReturnPropostaDTO()
+                    {
+                        Codigo_Empresa = item.Codigo_Empresa,
+                        Codigo_Interno = item.Codigo_Interno,
+                        Codigo_Produto = item.Id_Produto,
+                        Cobertura_Total = item.Cobertura_Total,
+                        Premio_Total = item.Premio_Total,
+                        Segurado = segurado, 
+                        //Condicao_Pagto = pagamento,
+                        Endereco_Faturamento = item.Endereco_Faturamento,
+                        Questionario_Risco = item.Questionario_Risco
+                    });
+                }
+
+                return Ok(dto.ToArray());
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"falha ao executar _propostaRepository.GetPropostaList() : {ex.Message}");
+                return BadRequest(ex.Message);
+            }
         }
 
         //[Authorize]

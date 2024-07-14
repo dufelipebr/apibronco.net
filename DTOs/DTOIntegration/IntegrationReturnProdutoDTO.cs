@@ -19,7 +19,7 @@ namespace apibronco.bronco.com.br.DTOs.DTOIntegration
 
         //public GrupoRamo GrupoRamo { get; set;  }
         //protected IntegrationCoberturaDTO[] Coberturas { get; set; }
-        public IntegrationQuestionarioRiscoDTO[] Questionario_Riscos { get; set; }
+        public QuestionarioRisco[] Questionario_Riscos { get; set; }
         
         public string[] IncludedFeatures { get; set;  }
         //{

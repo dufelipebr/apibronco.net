@@ -19,13 +19,13 @@ namespace apibronco.bronco.com.br.Entity
             //Coberturas = dto.Coberturas;
             //Questionario_Riscos = dto.Questionario_Riscos;
 
-            List<QuestionarioRisco> riscos = new List<QuestionarioRisco>();
-            foreach (IntegrationQuestionarioRiscoDTO qr in dto.Questionario_Riscos)
-            {
-                riscos.Add(new QuestionarioRisco(qr));
-            }
+            //List<QuestionarioRisco> riscos = new List<QuestionarioRisco>();
+            //foreach (IntegrationQuestionarioRiscoDTO qr in dto.Questionario_Riscos)
+            //{
+            //    riscos.Add(new QuestionarioRisco(qr));
+            //}
 
-            this.Questionario_Riscos = riscos.ToArray();
+            this.Questionario_Riscos = dto.Questionario_Riscos;
 
             //List<Cobertura> coberturas = new List<Cobertura>();
             //foreach (IntegrationCoberturaDTO cob in dto.Coberturas)

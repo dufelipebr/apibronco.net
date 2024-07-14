@@ -18,6 +18,8 @@ namespace apibronco.bronco.com.br.DTOs
 
         public decimal? Cobertura_Total { get; set; }
         public decimal? Premio_Total { get; set; }
+
+        public QuestionarioRisco Questionario_Risco { get; set; }
         //public Ramo Ramo { get; set; }
 
         //public IList<Cobertura> Coberturas { get; set; } // lista de coberturas coberta na apolice/proposta
